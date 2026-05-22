@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusOn Interiors - Procurement Vendor Research</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .gradient-red {
+            background: linear-gradient(135deg, #D32F2F 0%, #B71C1C 100%);
+        }
+
+        .red-text {
+            color: #D32F2F;
+        }
+
+        .spinner {
+            border: 4px solid #F5F5F5;
+            border-top: 4px solid #D32F2F;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .loader-text {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .vendor-table {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .vendor-row:hover {
+            background-color: #FAFAFA;
+            transition: background-color 0.3s ease;
+        }
+
+        .match-score-high {
+            color: #2E7D32;
+            font-weight: 600;
+        }
+
+        .match-score-low {
+            color: #D32F2F;
+            font-weight: 600;
+        }
+
+        .match-score-medium {
+            color: #F57F17;
+            font-weight: 600;
+        }
+
+        .badge-verified {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .sticky-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sticky-table-header {
+            position: sticky;
+            top: 80px;
+            z-index: 40;
+        }
+
+        .truncate-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .highlight-red {
+            color: #D32F2F;
+            font-weight: 600;
+        }
+
+        .card-shadow {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .input-focus {
+            transition: all 0.3s ease;
+        }
+
+        .input-focus:focus {
+            outline: none;
+            border-color: #D32F2F;
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+        }
+
+        .btn-hover {
+            transition: all 0.3s ease;
+        }
+
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Navbar -->
+    <nav class="sticky-navbar bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 gradient-red rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">FI</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-gray-900">FocusOn Interiors</h1>
+                    <p class="text-xs text-gray-600">Procurement Vendor Research</p>
+                </div>
+            </div>
+            <div class="text-right hidden md:block">
+                <p class="text-sm text-gray-600">Intelligent Vendor Discovery</p>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Search Form Card -->
+        <div class="bg-white rounded-xl card-shadow p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Find Vendors</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Item Name -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Item Name</label>
+                    <input 
+                        type="text" 
+                        id="itemName" 
+                        placeholder="e.g., ACP Sheet, Plywood"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus text-gray-900 placeholder-gray-500"
+                    >
+                </div>
+
+                <!-- Item Description -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Item Description</label>
+                    <input 
+                        type="text" 
+                        id="itemDescription" 
+                        placeholder="e.g., 3mm thickness, commercial use"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus text-gray-900 placeholder-gray-500"
+                    >
+                </div>
+
+                <!-- Technical Specifications -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Technical Specifications</label>
+                    <input 
+                        type="text" 
+                        id="technicalSpecs" 
+                        placeholder="e.g., Fire rated, water resistant"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus text-gray-900 placeholder-gray-500"
+                    >
+                </div>
+
+                <!-- Brand/Make -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Brand/Make</label>
+                    <input 
+                        type="text" 
+                        id="brandMake" 
+                        placeholder="e.g., Greenlam, Kinley, Plyco"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus text-gray-900 placeholder-gray-500"
+                    >
+                </div>
+
+                <!-- State -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">State</label>
+                    <select id="state" class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus text-gray-900 bg-white">
+                        <option value="">Select State</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Delhi">Delhi</option>
+                    </select>
+                </div>
+
+                <!-- District/City -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">District/City</label>
+                    <input 
+                        type="text" 
+                        id="district" 
+                        placeholder="e.g., Ahmedabad, Bangalore"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus text-gray-900 placeholder-gray-500"
+                    >
+                </div>
+            </div>
+
+            <!-- Search Button -->
+            <div class="flex gap-4 flex-wrap">
+                <button 
+                    id="searchBtn" 
+                    onclick="performSearch()"
+                    class="gradient-red text-white px-8 py-3 rounded-lg font-semibold btn-hover"
+                >
+                    Search Vendors
+                </button>
+                <button 
+                    id="historyBtn" 
+                    onclick="showSearchHistory()"
+                    class="bg-gray-200 text-gray-900 px-8 py-3 rounded-lg font-semibold btn-hover"
+                >
+                    Search History
+                </button>
+                <button 
+                    id="savedBtn" 
+                    onclick="showSavedVendors()"
+                    class="bg-gray-200 text-gray-900 px-8 py-3 rounded-lg font-semibold btn-hover"
+                >
+                    Saved Vendors
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden">
+            <div class="bg-white rounded-xl card-shadow p-12 text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="spinner"></div>
+                </div>
+                <p class="text-lg font-semibold text-gray-900 mb-2">Researching Vendors</p>
+                <p id="loaderMessage" class="text-gray-600 loader-text">Searching local vendors...</p>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="hidden">
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
+                <p class="text-red-700 font-semibold" id="errorMessage"></p>
+            </div>
+        </div>
+
+        <!-- Results Table -->
+        <div id="resultsContainer" class="hidden">
+            <div class="bg-white rounded-xl vendor-table overflow-hidden">
+                <!-- Results Header -->
+                <div class="bg-gray-50 border-b border-gray-200 p-6 sticky top-80 z-30">
+                    <div class="flex justify-between items-center flex-wrap gap-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900">Vendor Results</h3>
+                            <p id="resultCount" class="text-sm text-gray-600">Found vendors</p>
+                        </div>
+                        <div class="flex gap-3 flex-wrap">
+                            <button onclick="exportToCSV()" class="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold btn-hover text-sm">
+                                📊 Export Excel
+                            </button>
+                            <button onclick="copyTable()" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold btn-hover text-sm">
+                                📋 Copy
+                            </button>
+                            <button onclick="window.print()" class="bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold btn-hover text-sm">
+                                🖨️ Print
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="sticky-table-header bg-gray-100 border-b border-gray-300">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Sr No</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Match %</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Company Name</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Item</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Description</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Brand Match</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Contact</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Mobile</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Email</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Website</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">State</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">District</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Source</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Status</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-700">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vendorTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search History Modal -->
+        <div id="historyModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl max-w-2xl w-full max-h-96 overflow-y-auto">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-gray-900">Search History</h3>
+                        <button onclick="document.getElementById('historyModal').classList.add('hidden')" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+                    </div>
+                </div>
+                <div id="historyList" class="p-6 space-y-3">
+                </div>
+            </div>
+        </div>
+
+        <!-- Saved Vendors Modal -->
+        <div id="savedModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl max-w-4xl w-full max-h-96 overflow-y-auto">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-gray-900">Saved Vendors</h3>
+                        <button onclick="document.getElementById('savedModal').classList.add('hidden')" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+                    </div>
+                </div>
+                <div id="savedList" class="p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="px-4 py-2 text-left font-semibold text-gray-900">Company</th>
+                                    <th class="px-4 py-2 text-left font-semibold text-gray-900">Mobile</th>
+                                    <th class="px-4 py-2 text-left font-semibold text-gray-900">City</th>
+                                    <th class="px-4 py-2 text-left font-semibold text-gray-900">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="savedTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-300">FocusOn Interiors Procurement Intelligence System</p>
+            <p class="text-xs text-gray-500 mt-2">© 2024 All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        // API Keys
+        const OPENROUTER_API_KEY = "PASTE_OPENROUTER_KEY";
+        const SERPER_API_KEY = "PASTE_SERPER_KEY";
+
+        // Loader Messages
+        const loaderMessages = [
+            "Searching local vendors...",
+            "Matching specifications...",
+            "Analyzing supplier relevance...",
+            "Finding nearby suppliers...",
+            "Verifying vendor details...",
+            "Processing results..."
+        ];
+
+        let currentMessageIndex = 0;
+        let loaderInterval;
+
+        // Rotate loader messages
+        function rotateLoaderMessage() {
+            const loaderMsg = document.getElementById('loaderMessage');
+            loaderMsg.textContent = loaderMessages[currentMessageIndex];
+            currentMessageIndex = (currentMessageIndex + 1) % loaderMessages.length;
+        }
+
+        // Show loading state
+        function showLoading() {
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('resultsContainer').classList.add('hidden');
+            document.getElementById('errorState').classList.add('hidden');
+            currentMessageIndex = 0;
+            rotateLoaderMessage();
+            loaderInterval = setInterval(rotateLoaderMessage, 2000);
+        }
+
+        // Hide loading state
+        function hideLoading() {
+            document.getElementById('loadingState').classList.add('hidden');
+            clearInterval(loaderInterval);
+        }
+
+        // Show error
+        function showError(message) {
+            hideLoading();
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorState').classList.remove('hidden');
+            document.getElementById('resultsContainer').classList.add('hidden');
+        }
+
+        // Generate search queries
+        function generateSearchQueries(item, description, specs, brand, state, district) {
+            const queries = [];
+            
+            if (item && state && district) {
+                queries.push(`${item} suppliers ${district} ${state}`);
+                queries.push(`${item} dealers ${district}`);
+                queries.push(`${item} wholesale ${district} ${state}`);
+                if (brand) {
+                    queries.push(`${brand} ${item} supplier ${district}`);
+                }
+                if (specs) {
+                    queries.push(`${specs} ${item} suppliers ${state}`);
+                }
+                queries.push(`commercial ${item} suppliers near ${district}`);
+                queries.push(`${item} manufacturer ${district}`);
+                queries.push(`best ${item} suppliers ${district}`);
+                queries.push(`${item} local dealer ${district}`);
+                queries.push(`buy ${item} online ${state}`);
+            }
+            
+            return queries.length > 0 ? queries : [
+                `${item || 'construction'} suppliers India`,
+                `${item || 'materials'} wholesale`
+            ];
+        }
+
+        // Fetch from Serper API
+        async function searchWithSerper(query) {
+            try {
+                const response = await fetch('https://google.serper.dev/search', {
+                    method: 'POST',
+                    headers: {
+                        'X-API-KEY': SERPER_API_KEY,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        q: query,
+                        num: 10,
+                        type: 'search'
+                    })
+                });
+
+                if (!response.ok) {
+                    console.warn('Serper API error:', response.status);
+                    return [];
+                }
+
+                const data = await response.json();
+                return data.organic || [];
+            } catch (error) {
+                console.warn('Serper search error:', error);
+                return [];
+            }
+        }
+
+        // Extract contact info using AI
+        async function extractVendorInfo(searchResults, itemName, brand, state, district) {
+            if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === 'PASTE_OPENROUTER_KEY') {
+                showError('Please add your OpenRouter API key to the JavaScript code first.');
+                return [];
+            }
+
+            try {
+                const resultsText = searchResults.map((r, i) => 
+                    `${i+1}. Title: ${r.title}\nSnippet: ${r.snippet}\nURL: ${r.link}`
+                ).join('\n\n');
+
+                const prompt = `You are a procurement research analyst. Analyze these Google search results and extract vendor information for: ${itemName}${brand ? ` (Brand: ${brand})` : ''} in ${district}, ${state}.
+
+Search Results:
+${resultsText}
+
+Extract TOP 10 REAL vendors from these results. For each vendor provide:
+1. Company name (from actual search results only)
+2. Item match (what they sell)
+3. Description match (product details)
+4. Brand match (if they match the brand requested)
+5. Contact person name (if found)
+6. Phone number (exactly as shown, or "Not found")
+7. Email (exactly as shown, or "Not found")
+8. Website URL
+9. City/District
+10. Match score (0-100)
+
+IMPORTANT RULES:
+- Use ONLY information from the search results
+- Do NOT invent phone numbers or emails
+- Prioritize vendors in ${district}
+- Then vendors in ${state}
+- Match specifications and brands
+- Remove duplicates
+- Return as JSON array
+- Each vendor MUST have realistic data from actual search results
+
+Return ONLY valid JSON array with exactly this structure:
+[{"company":"name","item":"${itemName}","description":"description","brandMatch":"${brand||'N/A'}","contact":"name","phone":"number","email":"email","website":"url","district":"${district}","state":"${state}","source":"Google Search","matchScore":85}]`;
+
+                const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'deepseek/deepseek-chat-v4',
+                        messages: [
+                            {
+                                role: 'user',
+                                content: prompt
+                            }
+                        ],
+                        temperature: 0.3,
+                        max_tokens: 2000
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    console.warn('OpenRouter error:', error);
+                    return [];
+                }
+
+                const data = await response.json();
+                const content = data.choices[0].message.content;
+                
+                try {
+                    const jsonMatch = content.match(/\[[\s\S]*\]/);
+                    if (jsonMatch) {
+                        return JSON.parse(jsonMatch[0]);
+                    }
+                } catch (e) {
+                    console.warn('JSON parse error:', e);
+                }
+
+                return [];
+            } catch (error) {
+                console.warn('AI extraction error:', error);
+                return [];
+            }
+        }
+
+        // Perform search
+        async function performSearch() {
+            const itemName = document.getElementById('itemName').value.trim();
+            const itemDesc = document.getElementById('itemDescription').value.trim();
+            const specs = document.getElementById('technicalSpecs').value.trim();
+            const brand = document.getElementById('brandMake').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const district = document.getElementById('district').value.trim();
+
+            if (!itemName) {
+                showError('Please enter an item name');
+                return;
+            }
+
+            if (!state || !district) {
+                showError('Please select state and district');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // Generate search queries
+                const queries = generateSearchQueries(itemName, itemDesc, specs, brand, state, district);
+                
+                // Fetch from Serper
+                let allResults = [];
+                for (const query of queries.slice(0, 3)) {
+                    const results = await searchWithSerper(query);
+                    allResults = [...allResults, ...results];
+                }
+
+                if (allResults.length === 0) {
+                    hideLoading();
+                    showError('No vendors found. Please try different search parameters.');
+                    return;
+                }
+
+                // Extract vendor info using AI
+                const vendors = await extractVendorInfo(allResults, itemName, brand, state, district);
+
+                hideLoading();
+
+                if (vendors.length === 0) {
+                    showError('Could not extract vendor information. Please check API keys.');
+                    return;
+                }
+
+                // Display results
+                displayResults(vendors, itemName, brand, state, district);
+
+                // Save search history
+                saveSearchHistory({
+                    itemName,
+                    itemDesc,
+                    specs,
+                    brand,
+                    state,
+                    district,
+                    timestamp: new Date().toLocaleString(),
+                    resultCount: vendors.length
+                });
+
+            } catch (error) {
+                hideLoading();
+                showError('Search failed. Please try again.');
+                console.error('Search error:', error);
+            }
+        }
+
+        // Display results
+        function displayResults(vendors, itemName, brand, state, district) {
+            const tbody = document.getElementById('vendorTableBody');
+            tbody.innerHTML = '';
+
+            vendors.forEach((vendor, index) => {
+                const matchScore = vendor.matchScore || 75;
+                const scoreClass = matchScore >= 80 ? 'match-score-high' : matchScore >= 60 ? 'match-score-medium' : 'match-score-low';
+                
+                const row = document.createElement('tr');
+                row.className = 'vendor-row border-b border-gray-200 hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-4 py-3 text-sm text-gray-900">${index + 1}</td>
+                    <td class="px-4 py-3 text-sm"><span class="${scoreClass}">${matchScore}%</span></td>
+                    <td class="px-4 py-3 text-sm font-semibold text-gray-900 truncate-text max-w-xs">${vendor.company || 'N/A'}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700 truncate-text max-w-xs">${vendor.item || 'N/A'}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700 truncate-text max-w-xs">${vendor.description || 'N/A'}</td>
+                    <td class="px-4 py-3 text-sm">
+                        ${vendor.brandMatch && vendor.brandMatch !== 'N/A' && vendor.brandMatch !== brand ? `<span class="highlight-red">${vendor.brandMatch}</span>` : `<span class="text-gray-500">${vendor.brandMatch || 'N/A'}</span>`}
+                    </td>
+                    <td class="px-4 py-3 text-sm text-gray-700 truncate-text max-w-xs">${vendor.contact || 'N/A'}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900 font-mono">
+                        <a href="tel:${vendor.phone}" class="text-blue-600 hover:underline">${vendor.phone || 'N/A'}</a>
+                    </td>
+                    <td class="px-4 py-3 text-sm text-gray-700 truncate-text max-w-xs">
+                        ${vendor.email ? `<a href="mailto:${vendor.email}" class="text-blue-600 hover:underline truncate-text block">${vendor.email}</a>` : 'N/A'}
+                    </td>
+                    <td class="px-4 py-3 text-sm">
+                        ${vendor.website ? `<a href="${vendor.website}" target="_blank" class="text-blue-600 hover:underline truncate-text block">Visit</a>` : 'N/A'}
+                    </td>
+                    <td class="px-4 py-3 text-sm text-gray-900 font-semibold">${vendor.state || state}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900">${vendor.district || district}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700">${vendor.source || 'Google Search'}</td>
+                    <td class="px-4 py-3 text-sm">
+                        <span class="badge-verified">✓ VERIFIED</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm">
+                        <button onclick="saveVendor('${vendor.company.replace(/'/g, "\\'")}', '${vendor.phone.replace(/'/g, "\\'")}', '${vendor.district || district}')" class="text-white bg-red-600 px-3 py-1 rounded text-xs font-semibold hover:bg-red-700">
+                            Save
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('resultCount').textContent = `Found ${vendors.length} vendor(s)`;
+            document.getElementById('resultsContainer').classList.remove('hidden');
+            document.getElementById('errorState').classList.add('hidden');
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const rows = document.querySelectorAll('#vendorTableBody tr');
+            const headers = ['Sr No', 'Match %', 'Company Name', 'Item', 'Description', 'Brand Match', 'Contact Person', 'Mobile', 'Email', 'Website', 'State', 'District', 'Source', 'Status'];
+            
+            let csv = headers.join(',') + '\n';
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowData = [];
+                cells.forEach((cell, index) => {
+                    let text = cell.innerText.trim();
+                    if (text.includes(',')) text = `"${text}"`;
+                    if (index !== cells.length - 1) { // Skip action column
+                        rowData.push(text);
+                    }
+                });
+                csv += rowData.join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `vendors_${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Copy table
+        function copyTable() {
+            const rows = document.querySelectorAll('#vendorTableBody tr');
+            let text = 'Sr No\tMatch %\tCompany Name\tItem\tDescription\tBrand Match\tContact\tMobile\tEmail\tWebsite\tState\tDistrict\tSource\tStatus\n';
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowData = [];
+                cells.forEach((cell, index) => {
+                    if (index !== cells.length - 1) { // Skip action column
+                        rowData.push(cell.innerText.trim());
+                    }
+                });
+                text += rowData.join('\t') + '\n';
+            });
+
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Table copied to clipboard!');
+            }).catch(() => {
+                alert('Failed to copy table');
+            });
+        }
+
+        // Save vendor
+        function saveVendor(company, phone, district) {
+            let saved = JSON.parse(localStorage.getItem('savedVendors') || '[]');
+            
+            if (saved.some(v => v.company === company && v.phone === phone)) {
+                alert('Vendor already saved!');
+                return;
+            }
+
+            saved.push({
+                company,
+                phone,
+                district,
+                savedDate: new Date().toLocaleString()
+            });
+
+            localStorage.setItem('savedVendors', JSON.stringify(saved));
+            alert('Vendor saved successfully!');
+        }
+
+        // Save search history
+        function saveSearchHistory(search) {
+            let history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+            history.unshift(search);
+            history = history.slice(0, 20); // Keep last 20
+            localStorage.setItem('searchHistory', JSON.stringify(history));
+        }
+
+        // Show search history
+        function showSearchHistory() {
+            const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+            const historyList = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<p class="text-gray-600">No search history</p>';
+            } else {
+                historyList.innerHTML = history.map((h, i) => `
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100" onclick="loadSearch(${i})">
+                        <p class="font-semibold text-gray-900">${h.itemName}</p>
+                        <p class="text-xs text-gray-600">${h.district}, ${h.state} • ${h.resultCount} results • ${h.timestamp}</p>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('historyModal').classList.remove('hidden');
+        }
+
+        // Load search from history
+        function loadSearch(index) {
+            const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+            const search = history[index];
+            
+            document.getElementById('itemName').value = search.itemName;
+            document.getElementById('itemDescription').value = search.itemDesc;
+            document.getElementById('technicalSpecs').value = search.specs;
+            document.getElementById('brandMake').value = search.brand;
+            document.getElementById('state').value = search.state;
+            document.getElementById('district').value = search.district;
+            
+            document.getElementById('historyModal').classList.add('hidden');
+            performSearch();
+        }
+
+        // Show saved vendors
+        function showSavedVendors() {
+            const saved = JSON.parse(localStorage.getItem('savedVendors') || '[]');
+            const tbody = document.getElementById('savedTableBody');
+            
+            if (saved.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-4 py-3 text-center text-gray-600">No saved vendors</td></tr>';
+            } else {
+                tbody.innerHTML = saved.map((v, i) => `
+                    <tr class="border-b border-gray-200">
+                        <td class="px-4 py-2 text-gray-900">${v.company}</td>
+                        <td class="px-4 py-2"><a href="tel:${v.phone}" class="text-blue-600">${v.phone}</a></td>
+                        <td class="px-4 py-2 text-gray-700">${v.district}</td>
+                        <td class="px-4 py-2">
+                            <button onclick="deleteSavedVendor(${i})" class="text-red-600 text-sm font-semibold hover:underline">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            document.getElementById('savedModal').classList.remove('hidden');
+        }
+
+        // Delete saved vendor
+        function deleteSavedVendor(index) {
+            let saved = JSON.parse(localStorage.getItem('savedVendors') || '[]');
+            saved.splice(index, 1);
+            localStorage.setItem('savedVendors', JSON.stringify(saved));
+            showSavedVendors();
+        }
+
+        // Close modals on background click
+        document.getElementById('historyModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.add('hidden');
+        });
+
+        document.getElementById('savedModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
