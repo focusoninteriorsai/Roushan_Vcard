@@ -1,1306 +1,1009 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FocusOn Interiors — Procurement Vendor Research</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Roushan Kumar | Executive Digital Profile</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Playfair Display for editorial contrast -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brandRed: '#D62828',
+                        brandRedDark: '#9E1B1B',
+                        brandLightGray: '#F9FAFB',
+                        brandYellow: '#FFC857',
+                        textDark: '#111827',
+                        textMuted: '#4B5563',
+                        borderGray: '#E5E7EB'
+                    },
+                    boxShadow: {
+                        corporate: '0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03)',
+                        premium: '0 20px 40px -10px rgba(214, 40, 40, 0.06), 0 1px 10px rgba(0, 0, 0, 0.01)',
+                        hoverPremium: '0 30px 60px -15px rgba(214, 40, 40, 0.12), 0 1px 15px rgba(0, 0, 0, 0.02)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- -->
     <style>
-        * { font-family: 'Inter', sans-serif; }
-        :root {
-            --red: #D32F2F;
-            --red-light: #FFEBEE;
-            --red-dark: #B71C1C;
-            --white: #FFFFFF;
-            --gray-light: #F5F5F5;
-            --border-gray: #E0E0E0;
-            --text-dark: #333333;
+        /* Custom scrollbar matching corporate palette */
+        ::-webkit-scrollbar {
+            width: 5px;
         }
-        body { background: var(--gray-light); color: var(--text-dark); }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #aaa; }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        ::-webkit-scrollbar-track {
+            background: #FFFFFF;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        ::-webkit-scrollbar-thumb {
+            background: #D62828;
+            border-radius: 99px;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.3); }
-            50% { box-shadow: 0 0 0 12px rgba(211, 47, 47, 0); }
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
-        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
-        .animate-slide-down { animation: slideDown 0.3s ease-out forwards; }
-        .spinner { animation: spin 1s linear infinite; }
-        .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
-        .shimmer-bg {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
+        
+        /* Premium transition curves */
+        .smooth-transition {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Table styles */
-        .vendor-table { border-collapse: separate; border-spacing: 0; }
-        .vendor-table thead th {
-            position: sticky; top: 0; z-index: 10;
-            background: #D32F2F; color: white;
-            font-weight: 600; font-size: 0.75rem;
-            text-transform: uppercase; letter-spacing: 0.05em;
-            padding: 14px 12px; white-space: nowrap;
-            border-bottom: 3px solid #B71C1C;
-        }
-        .vendor-table thead th:first-child { border-radius: 12px 0 0 0; }
-        .vendor-table thead th:last-child { border-radius: 0 12px 0 0; }
-        .vendor-table tbody tr { transition: all 0.2s ease; }
-        .vendor-table tbody tr:hover { background: #FFF3F3 !important; transform: scale(1.002); }
-        .vendor-table tbody td {
-            padding: 12px; font-size: 0.82rem;
-            border-bottom: 1px solid #E0E0E0;
-            vertical-align: top;
-        }
-        .vendor-table tbody tr:nth-child(even) { background: #FAFAFA; }
-        .vendor-table tbody tr:nth-child(odd) { background: #FFFFFF; }
-
-        /* Badge styles */
-        .badge-verified {
-            background: linear-gradient(135deg, #43A047, #2E7D32);
-            color: white; font-size: 0.65rem; padding: 3px 8px;
-            border-radius: 20px; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 3px;
-        }
-        .badge-unverified {
-            background: #FFF3E0; color: #E65100;
-            font-size: 0.65rem; padding: 3px 8px;
-            border-radius: 20px; font-weight: 600;
-        }
-        .badge-source {
-            background: #E3F2FD; color: #1565C0;
-            font-size: 0.65rem; padding: 3px 8px;
-            border-radius: 20px; font-weight: 600;
-        }
-        .match-high { color: #2E7D32; font-weight: 700; }
-        .match-medium { color: #F57F17; font-weight: 700; }
-        .match-low { color: #D32F2F; font-weight: 600; }
-        .spec-highlight { color: #D32F2F; font-weight: 600; }
-
-        /* Input focus */
-        input:focus, select:focus, textarea:focus {
-            outline: none; border-color: #D32F2F !important;
-            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1) !important;
+        /* Glassmorphism white card styling */
+        .premium-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04);
         }
 
-        /* Toast */
-        .toast {
-            position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-            padding: 14px 24px; border-radius: 12px;
-            color: white; font-weight: 500; font-size: 0.9rem;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            animation: slideDown 0.3s ease-out;
+        /* Seamless ID Card Badge Perspective Flip Animation */
+        .card-perspective {
+            perspective: 1200px;
         }
-        .toast-success { background: linear-gradient(135deg, #43A047, #2E7D32); }
-        .toast-error { background: linear-gradient(135deg, #D32F2F, #B71C1C); }
-        .toast-info { background: linear-gradient(135deg, #1565C0, #0D47A1); }
-
-        /* Print styles */
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white; }
-            .vendor-table thead th { background: #D32F2F !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .card-inner {
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
         }
-
-        /* History panel */
-        .history-item { transition: all 0.2s ease; }
-        .history-item:hover { background: #FFEBEE; transform: translateX(4px); }
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            backface-visibility: hidden;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="bg-[#F3F4F6] text-textDark font-sans min-h-screen antialiased flex flex-col justify-between selection:bg-brandRed selection:text-white">
 
-    <!-- API Keys -->
-    <script>
-        const OPENROUTER_API_KEY = "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";
-        const SERPER_API_KEY = "0a30f95716d5412647539ed4870b4f621692d3dd";
-    </script>
+    <!-- -->
+    <!-- Maximum elegant container layout wrapping digital card elements on desktop, full bleed on mobile devices -->
+    <div class="w-full max-w-md mx-auto bg-white min-h-screen shadow-2xl relative flex flex-col pb-28 border-x border-gray-200/60 overflow-x-hidden">
+        
+        <!-- Subtle corporate grid watermark in background -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none"></div>
 
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm no-print" style="backdrop-filter: blur(20px); background: rgba(255,255,255,0.95);">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #D32F2F, #B71C1C);">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h1 class="text-lg font-bold" style="color: #D32F2F;">FocusOn Interiors</h1>
-                        <p class="text-xs text-gray-500 -mt-0.5 hidden sm:block">Procurement Vendor Research</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="toggleHistory()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors relative" title="Search History">
-                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <span id="historyBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold"></span>
-                    </button>
-                    <button onclick="toggleSavedVendors()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors" title="Saved Vendors">
-                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-                        </svg>
-                    </button>
-                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors" title="Toggle Dark Mode">
-                        <svg id="darkModeIcon" class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                        </svg>
-                    </button>
-                </div>
+        <!-- STICKY HEADER -->
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 px-5 py-3.5 flex justify-between items-center">
+            <!-- Precise Corporate SVG Logo reconstructed directly from Page 2 of "id card- Roushan Kumar.pdf" -->
+            <div class="flex items-center gap-1.5 select-none">
+                <svg class="h-7 w-auto" viewBox="0 0 240 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="FocusOn Interiors Corporate Logo">
+                    <!-- Stylized F graphic matching Page 2 geometry -->
+                    <!-- Top dot -->
+                    <circle cx="16" cy="17" r="4" fill="#D62828" />
+                    <!-- Left curved stem -->
+                    <path d="M16 23C16 23 23 23 23 31C23 39 16 39 16 39V23Z" fill="#D62828" />
+                    <path d="M16 39C16 39 9 39 9 31C9 23 16 23 16 23V39Z" fill="#D62828" />
+                    <path d="M16 23V51" stroke="#D62828" stroke-width="3" stroke-linecap="round"/>
+                    <!-- Top crescent bowl -->
+                    <path d="M26 23C29 23 33 26 33 30H20C20 26 23 23 26 23Z" fill="#D62828" />
+                    <!-- Bottom crescent bowl -->
+                    <path d="M16 31H28C28 35 25 38 21 38C17 38 16 35 16 31Z" fill="#D62828" />
+                    
+                    <!-- Text representation matching exact font weight specs -->
+                    <text x="44" y="32" font-family="'Inter', sans-serif" font-weight="800" font-size="21" fill="#D62828" letter-spacing="-0.3">FocusOn</text>
+                    <text x="44" y="48" font-family="'Inter', sans-serif" font-weight="400" font-size="10.5" fill="#333333" letter-spacing="4">INTERIORS</text>
+                </svg>
             </div>
-        </div>
-    </nav>
-
-    <!-- History Panel -->
-    <div id="historyPanel" class="fixed top-16 right-0 w-96 max-w-full h-screen bg-white shadow-2xl z-40 transform translate-x-full transition-transform duration-300 overflow-y-auto no-print" style="border-left: 1px solid #E0E0E0;">
-        <div class="p-5">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="font-bold text-lg" style="color: #333;">Search History</h3>
-                <button onclick="clearHistory()" class="text-xs text-red-500 hover:text-red-700 font-medium">Clear All</button>
-            </div>
-            <div id="historyList" class="space-y-2"></div>
-            <p id="noHistory" class="text-gray-400 text-sm text-center py-8">No search history yet</p>
-        </div>
-    </div>
-
-    <!-- Saved Vendors Panel -->
-    <div id="savedPanel" class="fixed top-16 right-0 w-96 max-w-full h-screen bg-white shadow-2xl z-40 transform translate-x-full transition-transform duration-300 overflow-y-auto no-print" style="border-left: 1px solid #E0E0E0;">
-        <div class="p-5">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="font-bold text-lg" style="color: #333;">Saved Vendors</h3>
-                <button onclick="clearSavedVendors()" class="text-xs text-red-500 hover:text-red-700 font-medium">Clear All</button>
-            </div>
-            <div id="savedList" class="space-y-2"></div>
-            <p id="noSaved" class="text-gray-400 text-sm text-center py-8">No saved vendors yet</p>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        <!-- Hero Header -->
-        <div class="text-center mb-8 animate-fade-in-up">
-            <h2 class="text-3xl sm:text-4xl font-extrabold mb-2" style="color: #333;">Vendor Research Intelligence</h2>
-            <p class="text-gray-500 text-base max-w-2xl mx-auto">Find verified suppliers for construction & interior materials across India using AI-powered procurement research.</p>
-        </div>
-
-        <!-- Search Form -->
-        <div class="bg-white rounded-2xl shadow-lg border p-6 sm:p-8 mb-8 animate-fade-in-up" style="border-color: #E0E0E0; animation-delay: 0.1s;">
-            <div class="flex items-center gap-2 mb-6">
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: #FFEBEE;">
-                    <svg class="w-4 h-4" style="color: #D32F2F;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                </div>
-                <h3 class="text-lg font-bold" style="color: #333;">Search Vendors</h3>
-            </div>
-
-            <form id="searchForm" onsubmit="handleSearch(event)">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <!-- Item Name -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Item Name <span class="text-red-500">*</span></label>
-                        <input type="text" id="itemName" required placeholder="e.g., ACP Sheet, Plywood, Gypsum Board"
-                            class="w-full px-4 py-2.5 rounded-xl border bg-gray-50 text-sm transition-all duration-200" style="border-color: #E0E0E0;">
-                    </div>
-                    <!-- Item Description -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Item Description</label>
-                        <input type="text" id="itemDesc" placeholder="e.g., 4mm thick, fire-resistant, PE core"
-                            class="w-full px-4 py-2.5 rounded-xl border bg-gray-50 text-sm transition-all duration-200" style="border-color: #E0E0E0;">
-                    </div>
-                    <!-- Technical Specs -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Technical Specifications</label>
-                        <input type="text" id="techSpecs" placeholder="e.g., 1220x2440mm, 0.5mm PVDF coating"
-                            class="w-full px-4 py-2.5 rounded-xl border bg-gray-50 text-sm transition-all duration-200" style="border-color: #E0E0E0;">
-                    </div>
-                    <!-- Brand/Make -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Brand / Make</label>
-                        <input type="text" id="brandMake" placeholder="e.g., Aludecor, Greenlam, Gyproc"
-                            class="w-full px-4 py-2.5 rounded-xl border bg-gray-50 text-sm transition-all duration-200" style="border-color: #E0E0E0;">
-                    </div>
-                    <!-- State -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">State <span class="text-red-500">*</span></label>
-                        <select id="stateSelect" required class="w-full px-4 py-2.5 rounded-xl border bg-gray-50 text-sm transition-all duration-200" style="border-color: #E0E0E0;">
-                            <option value="">Select State</option>
-                        </select>
-                    </div>
-                    <!-- District/City -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">District / City <span class="text-red-500">*</span></label>
-                        <input type="text" id="district" required placeholder="e.g., Ahmedabad, Pune, Jaipur"
-                            class="w-full px-4 py-2.5 rounded-xl border bg-gray-50 text-sm transition-all duration-200" style="border-color: #E0E0E0;">
-                    </div>
-                </div>
-
-                <div class="mt-6 flex flex-col sm:flex-row gap-3">
-                    <button type="submit" id="searchBtn"
-                        class="flex-1 sm:flex-none px-8 py-3 rounded-xl text-white font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
-                        style="background: linear-gradient(135deg, #D32F2F, #B71C1C);">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
-                        Search Vendors
-                    </button>
-                    <button type="button" onclick="resetForm()"
-                        class="px-6 py-3 rounded-xl border font-semibold text-sm text-gray-600 hover:bg-gray-50 transition-all duration-200"
-                        style="border-color: #E0E0E0;">
-                        Reset
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Loading Section -->
-        <div id="loadingSection" class="hidden">
-            <div class="bg-white rounded-2xl shadow-lg border p-10 text-center" style="border-color: #E0E0E0;">
-                <div class="inline-block mb-6">
-                    <div class="w-16 h-16 rounded-full border-4 border-gray-200 spinner" style="border-top-color: #D32F2F;"></div>
-                </div>
-                <h3 id="loadingTitle" class="text-xl font-bold mb-2" style="color: #333;">Researching Vendors...</h3>
-                <p id="loadingMessage" class="text-gray-500 text-sm mb-6">Searching local vendors...</p>
-                <div class="max-w-md mx-auto">
-                    <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                        <div id="progressBar" class="h-full rounded-full transition-all duration-500" style="width: 0%; background: linear-gradient(90deg, #D32F2F, #E53935);"></div>
-                    </div>
-                    <div class="flex justify-between mt-2 text-xs text-gray-400">
-                        <span>Searching</span>
-                        <span id="progressText">0%</span>
-                        <span>Analyzing</span>
-                    </div>
-                </div>
-                <!-- Step indicators -->
-                <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-lg mx-auto">
-                    <div id="step1" class="flex items-center gap-1.5 text-xs text-gray-400">
-                        <div class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                            <span class="text-xs">1</span>
-                        </div>
-                        <span>Queries</span>
-                    </div>
-                    <div id="step2" class="flex items-center gap-1.5 text-xs text-gray-400">
-                        <div class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                            <span class="text-xs">2</span>
-                        </div>
-                        <span>Search</span>
-                    </div>
-                    <div id="step3" class="flex items-center gap-1.5 text-xs text-gray-400">
-                        <div class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                            <span class="text-xs">3</span>
-                        </div>
-                        <span>Analyze</span>
-                    </div>
-                    <div id="step4" class="flex items-center gap-1.5 text-xs text-gray-400">
-                        <div class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                            <span class="text-xs">4</span>
-                        </div>
-                        <span>Rank</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Error Section -->
-        <div id="errorSection" class="hidden">
-            <div class="bg-white rounded-2xl shadow-lg border p-8 text-center" style="border-color: #FFCDD2; background: #FFF5F5;">
-                <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center" style="background: #FFEBEE;">
-                    <svg class="w-7 h-7" style="color: #D32F2F;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                    </svg>
-                </div>
-                <h3 class="text-lg font-bold mb-2" style="color: #D32F2F;">Research Error</h3>
-                <p id="errorMessage" class="text-gray-600 text-sm mb-4"></p>
-                <button onclick="retrySearch()" class="px-6 py-2.5 rounded-xl text-white font-semibold text-sm" style="background: #D32F2F;">
-                    Try Again
+            
+            <div class="flex items-center gap-1.5">
+                <button onclick="openQrModal()" class="p-2 rounded-lg text-textMuted hover:text-brandRed hover:bg-brandLightGray smooth-transition" title="Display QR Code">
+                    <i data-lucide="qr-code" class="w-5 h-5"></i>
+                </button>
+                <button onclick="openShareModal()" class="p-2 rounded-lg text-textMuted hover:text-brandRed hover:bg-brandLightGray smooth-transition" title="Share Options">
+                    <i data-lucide="send" class="w-5 h-5"></i>
                 </button>
             </div>
-        </div>
+        </header>
 
-        <!-- Results Section -->
-        <div id="resultsSection" class="hidden">
-            <!-- Results Header -->
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3 no-print">
-                <div>
-                    <h3 class="text-xl font-bold" style="color: #333;">
-                        Vendor Results
-                        <span id="resultCount" class="text-sm font-normal text-gray-500 ml-2"></span>
-                    </h3>
-                    <p id="resultSummary" class="text-sm text-gray-500 mt-0.5"></p>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="exportToCSV()" class="px-4 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 transition-all" style="border-color: #E0E0E0;">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        Export Excel
-                    </button>
-                    <button onclick="copyTable()" class="px-4 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 transition-all" style="border-color: #E0E0E0;">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                        Copy
-                    </button>
-                    <button onclick="printTable()" class="px-4 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 transition-all" style="border-color: #E0E0E0;">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                        Print
-                    </button>
-                </div>
+        <!-- -->
+        <!-- CORE IDENTIFICATION CARD WRAPPER -->
+        <section class="px-5 pt-6 pb-2">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-xs font-bold text-brandRed uppercase tracking-widest flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brandRed"></span> Verified Professional
+                </span>
+                <button onclick="toggleCardOrientation()" class="text-xs font-semibold text-textMuted hover:text-brandRed flex items-center gap-1.5 bg-brandLightGray py-1 px-2.5 rounded-full border border-gray-100 smooth-transition">
+                    <i data-lucide="rotate-3d" class="w-3.5 h-3.5"></i> Flip Business Badge
+                </button>
             </div>
 
-            <!-- Table Container -->
-            <div class="bg-white rounded-2xl shadow-lg border overflow-hidden" style="border-color: #E0E0E0;">
-                <div class="overflow-x-auto">
-                    <table class="vendor-table w-full" id="vendorTable">
-                        <thead>
-                            <tr>
-                                <th>Sr</th>
-                                <th>Match %</th>
-                                <th>Company Name</th>
-                                <th>Item</th>
-                                <th>Matching Description</th>
-                                <th>Brand Match</th>
-                                <th>Contact Person</th>
-                                <th>Mobile</th>
-                                <th>Email</th>
-                                <th>Website</th>
-                                <th>State</th>
-                                <th>District</th>
-                                <th>Source</th>
-                                <th>Status</th>
-                                <th class="no-print">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="vendorTableBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </main>
+            <!-- Double sided card perspective setup representing exact styles from Page 1 / Page 2 of "id card- Roushan Kumar.pdf" -->
+            <div class="card-perspective w-full h-[460px]">
+                <div id="badge-card" class="card-inner w-full h-full relative cursor-pointer" onclick="toggleCardOrientation()">
+                    
+                    <!-- FRONT SIDE OF BADGE: Page 1 ID Card Reconstruction -->
+                    <div class="card-front absolute inset-0 w-full h-full bg-white border border-gray-200/80 rounded-3xl shadow-premium p-6 flex flex-col justify-between overflow-hidden">
+                        <!-- Dot grid decor on top-right of physical badge -->
+                        <div class="absolute -top-1 -right-1 text-gray-300 opacity-60">
+                            <svg width="60" height="60" viewBox="0 0 60 60" fill="currentColor">
+                                <circle cx="5" cy="5" r="2"/><circle cx="17" cy="5" r="2"/><circle cx="29" cy="5" r="2"/><circle cx="41" cy="5" r="2"/><circle cx="53" cy="5" r="2"/>
+                                <circle cx="5" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><circle cx="29" cy="17" r="2"/><circle cx="41" cy="17" r="2"/><circle cx="53" cy="17" r="2"/>
+                                <circle cx="5" cy="29" r="2"/><circle cx="17" cy="29" r="2"/><circle cx="29" cy="29" r="2"/><circle cx="41" cy="29" r="2"/><circle cx="53" cy="29" r="2"/>
+                                <circle cx="5" cy="41" r="2"/><circle cx="17" cy="41" r="2"/><circle cx="29" cy="41" r="2"/><circle cx="41" cy="41" r="2"/><circle cx="53" cy="41" r="2"/>
+                            </svg>
+                        </div>
+                        <!-- Dot grid decor on bottom-left of physical badge -->
+                        <div class="absolute -bottom-1 -left-1 text-gray-300 opacity-60">
+                            <svg width="60" height="60" viewBox="0 0 60 60" fill="currentColor">
+                                <circle cx="5" cy="5" r="2"/><circle cx="17" cy="5" r="2"/><circle cx="29" cy="5" r="2"/><circle cx="41" cy="5" r="2"/><circle cx="53" cy="5" r="2"/>
+                                <circle cx="5" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><circle cx="29" cy="17" r="2"/><circle cx="41" cy="17" r="2"/><circle cx="53" cy="17" r="2"/>
+                                <circle cx="5" cy="29" r="2"/><circle cx="17" cy="29" r="2"/><circle cx="29" cy="29" r="2"/><circle cx="41" cy="29" r="2"/><circle cx="53" cy="29" r="2"/>
+                                <circle cx="5" cy="41" r="2"/><circle cx="17" cy="41" r="2"/><circle cx="29" cy="41" r="2"/><circle cx="41" cy="41" r="2"/><circle cx="53" cy="41" r="2"/>
+                            </svg>
+                        </div>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t mt-12 no-print" style="border-color: #E0E0E0;">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #D32F2F, #B71C1C);">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                        </svg>
+                        <!-- Inner rounded red framing containing executive photo from PDF Page 1 -->
+                        <div class="relative w-full h-[280px] bg-brandRed rounded-2xl overflow-hidden shadow-inner flex items-center justify-center">
+                            <img src="https://placehold.co/400x500/D62828/FFFFFF?text=Roushan+Kumar" 
+                                 alt="Roushan Kumar Profile" 
+                                 class="w-full h-full object-cover"
+                                 onerror="this.src='https://placehold.co/400x500/D62828/FFFFFF?text=RK'">
+                            
+                            <!-- Semi-transparent corporate logo watermark inside framing -->
+                            <div class="absolute bottom-3 right-3 bg-white/20 backdrop-blur-sm rounded-full py-1 px-3 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                                <span class="text-[9px] font-bold text-white uppercase tracking-wider">Site Access ID</span>
+                            </div>
+                        </div>
+
+                        <!-- User Profile Information Metadata Block matching layout guidelines -->
+                        <div class="text-center mt-3 z-10">
+                            <h2 class="text-2xl font-bold text-textDark tracking-tight">Roushan Kumar</h2>
+                            <p class="text-xs font-semibold text-brandRed uppercase tracking-widest mt-0.5">Project Coordinator</p>
+                            <p class="text-[10px] font-medium text-textMuted uppercase tracking-widest mt-1">FocusOn Interiors</p>
+                        </div>
+
+                        <!-- Flip helper button -->
+                        <div class="flex justify-center">
+                            <span class="text-[9px] font-bold text-textMuted uppercase tracking-widest flex items-center gap-1 bg-brandLightGray px-3 py-1 rounded-full border border-gray-100">
+                                <i data-lucide="help-circle" class="w-3 h-3 text-brandRed"></i> Tap card to view back
+                            </span>
+                        </div>
                     </div>
-                    <span class="text-sm font-semibold text-gray-700">FocusOn Interiors Procurement Intelligence System</span>
+
+                    <!-- BACK SIDE OF BADGE: Page 2 QR & Contact Summary Reconstruction -->
+                    <div class="card-back absolute inset-0 w-full h-full bg-white border border-gray-200/80 rounded-3xl shadow-premium p-6 flex flex-col justify-between overflow-hidden">
+                        
+                        <!-- Top header of back card with central logo alignment -->
+                        <div class="flex flex-col items-center pt-2">
+                            <svg class="h-6 w-auto" viewBox="0 0 240 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="16" cy="17" r="4" fill="#D62828" />
+                                <path d="M16 23C16 23 23 23 23 31C23 39 16 39 16 39V23Z" fill="#D62828" />
+                                <path d="M16 39C16 39 9 39 9 31C9 23 16 23 16 23V39Z" fill="#D62828" />
+                                <path d="M16 23V51" stroke="#D62828" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M26 23C29 23 33 26 33 30H20C20 26 23 23 26 23Z" fill="#D62828" />
+                                <path d="M16 31H28C28 35 25 38 21 38C17 38 16 35 16 31Z" fill="#D62828" />
+                                <text x="44" y="32" font-family="'Inter', sans-serif" font-weight="800" font-size="21" fill="#D62828" letter-spacing="-0.3">FocusOn</text>
+                                <text x="44" y="48" font-family="'Inter', sans-serif" font-weight="400" font-size="10.5" fill="#333333" letter-spacing="4">INTERIORS</text>
+                            </svg>
+                            <div class="w-16 h-0.5 bg-brandRed rounded-full mt-3"></div>
+                        </div>
+
+                        <!-- Center dynamic QR code visual matching the brand style -->
+                        <div class="flex flex-col items-center my-2">
+                            <div class="bg-brandLightGray p-3 rounded-2xl border border-gray-100/80 shadow-inner">
+                                <img id="dynamic-badge-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.focusoninteriors.com&color=d62828" alt="Badge QR Code" class="w-36 h-36 rounded-lg">
+                            </div>
+                            <span class="text-[10px] text-textMuted font-medium uppercase tracking-wider mt-2.5">Official Scanner Portal</span>
+                        </div>
+
+                        <!-- Footer structured text layout directly mimicking PDF Page 2 specifications -->
+                        <div class="space-y-1.5 text-center px-4 border-t border-gray-100 pt-4 pb-2">
+                            <div class="flex items-center justify-center gap-1.5">
+                                <i data-lucide="mail" class="w-3.5 h-3.5 text-brandRed"></i>
+                                <span class="text-xs text-textDark font-medium">decorators@focusoninterior.in</span>
+                            </div>
+                            <div class="flex items-center justify-center gap-1.5">
+                                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brandRed"></i>
+                                <span class="text-xs text-textDark font-semibold tracking-wide">Gurgaon | Delhi | Bangalore | Mumbai</span>
+                            </div>
+                            <div class="flex items-center justify-center gap-1.5">
+                                <i data-lucide="globe" class="w-3.5 h-3.5 text-brandRed"></i>
+                                <span class="text-xs text-brandRed font-bold hover:underline">www.focusoninteriors.com</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <p class="text-xs text-gray-400">Delhi-based Interior & Construction Company &bull; Powered by AI</p>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- PROFESSIONAL TAGLINE -->
+        <section class="px-5 py-4 text-center">
+            <div class="relative max-w-xs mx-auto">
+                <span class="font-serif text-3xl text-brandRed/40 absolute -top-4 -left-3">“</span>
+                <p class="text-sm text-textDark font-serif italic leading-relaxed px-5">
+                    Delivering Interior Projects with Precision, Coordination & Excellence.
+                </p>
+                <span class="font-serif text-3xl text-brandRed/40 absolute -bottom-7 -right-3">”</span>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- QUICK ACTION BUTTONS GRID -->
+        <section class="px-5 py-4">
+            <!-- Save Contact Primary Action -->
+            <button onclick="downloadVCard()" class="w-full bg-brandRed hover:bg-brandRedDark active:scale-[0.98] text-white font-bold py-3.5 px-6 rounded-xl shadow-premium hover:shadow-hoverPremium smooth-transition flex items-center justify-center gap-2.5 text-sm uppercase tracking-wider mb-3">
+                <i data-lucide="user-plus" class="w-4.5 h-4.5"></i>
+                Save Contact details
+            </button>
+
+            <!-- Utility 2x2 Corporate Quick Connect Grid -->
+            <div class="grid grid-cols-2 gap-2.5">
+                <a href="tel:+919999999999" class="bg-white hover:bg-brandLightGray border border-gray-200 text-textDark font-semibold py-3 px-4 rounded-xl shadow-sm smooth-transition flex items-center gap-2 text-xs">
+                    <span class="p-1 rounded-md bg-brandLightGray text-brandRed">
+                        <i data-lucide="phone-call" class="w-4 h-4"></i>
+                    </span>
+                    Call Roushan
+                </a>
+                
+                <a href="https://wa.me/919999999999?text=Hello%20Roushan,%20I%20visited%20your%20digital%20vCard%20and%20would%20like%20to%20discuss%20a%20project." target="_blank" class="bg-white hover:bg-brandLightGray border border-gray-200 text-textDark font-semibold py-3 px-4 rounded-xl shadow-sm smooth-transition flex items-center gap-2 text-xs">
+                    <span class="p-1 rounded-md bg-green-50 text-green-600">
+                        <i data-lucide="message-square" class="w-4 h-4"></i>
+                    </span>
+                    WhatsApp
+                </a>
+
+                <a href="mailto:decorators@focusoninterior.in?subject=Project%20Inquiry%20-%20FocusOn%20Interiors" class="bg-white hover:bg-brandLightGray border border-gray-200 text-textDark font-semibold py-3 px-4 rounded-xl shadow-sm smooth-transition flex items-center gap-2 text-xs">
+                    <span class="p-1 rounded-md bg-brandLightGray text-brandRed">
+                        <i data-lucide="mail-open" class="w-4 h-4"></i>
+                    </span>
+                    Send Mail
+                </a>
+
+                <a href="http://www.focusoninteriors.com" target="_blank" class="bg-white hover:bg-brandLightGray border border-gray-200 text-textDark font-semibold py-3 px-4 rounded-xl shadow-sm smooth-transition flex items-center gap-2 text-xs">
+                    <span class="p-1 rounded-md bg-brandLightGray text-brandRed">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </span>
+                    Main Site
+                </a>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- EXECUTIVE BIO / METRICS -->
+        <section class="px-5 py-3">
+            <div class="bg-white border border-gray-200/80 rounded-2xl p-5 shadow-corporate relative overflow-hidden">
+                <!-- Warm subtle right-aligned top accent border block -->
+                <div class="absolute top-0 right-0 w-24 h-1 bg-gradient-to-l from-brandYellow to-brandRed"></div>
+                
+                <h3 class="text-sm font-extrabold uppercase tracking-wider text-textDark flex items-center gap-2 mb-3">
+                    <span class="w-1 h-4 bg-brandRed rounded-full inline-block"></span>
+                    About Me
+                </h3>
+                
+                <p class="text-xs leading-relaxed text-textMuted font-medium">
+                    Experienced Project Coordinator at <strong>FocusOn Interiors</strong> with expertise in project execution, site coordination, vendor management, procurement tracking, scheduling, quality monitoring, and client communication. Dedicated to delivering interior projects efficiently while maintaining quality standards, timelines, and client satisfaction.
+                </p>
+
+                <!-- Professional metrics matching a senior director status -->
+                <div class="grid grid-cols-3 gap-2.5 mt-5 pt-4 border-t border-gray-100 text-center">
+                    <div>
+                        <span class="block text-lg font-extrabold text-brandRed">98%</span>
+                        <span class="text-[9px] font-bold text-textMuted uppercase tracking-wider">On-Time Delivery</span>
+                    </div>
+                    <div class="border-x border-gray-100">
+                        <span class="block text-lg font-extrabold text-brandRed">150+</span>
+                        <span class="text-[9px] font-bold text-textMuted uppercase tracking-wider">Vendors Managed</span>
+                    </div>
+                    <div>
+                        <span class="block text-lg font-extrabold text-brandRed">Zero</span>
+                        <span class="text-[9px] font-bold text-textMuted uppercase tracking-wider">Safety Incidents</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- COMPANY CORPORATE BIO -->
+        <section class="px-5 py-3">
+            <div class="bg-white border border-gray-200/80 rounded-2xl p-5 shadow-corporate">
+                <div class="flex items-center gap-2.5 mb-3.5">
+                    <div class="p-2 bg-brandLightGray rounded-xl text-brandRed">
+                        <i data-lucide="building-2" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <span class="text-[9px] font-bold tracking-widest text-brandRed uppercase">Corporate Ecosystem</span>
+                        <h3 class="text-sm font-extrabold text-textDark">About FocusOn Interiors</h3>
+                    </div>
+                </div>
+
+                <div class="space-y-3 text-xs leading-relaxed text-textMuted">
+                    <p>
+                        FocusOn Interiors is a leading interior solutions company specializing in innovative, functional, and high-quality interior environments for commercial, corporate, retail, and residential spaces.
+                    </p>
+                    <p>
+                        Our approach combines creativity, technical expertise, project management excellence, and attention to detail to transform spaces into productive, inspiring, and visually appealing environments.
+                    </p>
+                </div>
+
+                <!-- Structured bullet checklist for corporate core strengths -->
+                <div class="mt-4 pt-4 border-t border-gray-100">
+                    <span class="text-[10px] font-bold uppercase text-textDark tracking-wider mb-2.5 block">Core Strengths</span>
+                    <div class="grid grid-cols-1 gap-2">
+                        <div class="flex items-start gap-2 text-[11px] text-textMuted">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Turnkey Interior Solutions</span>
+                        </div>
+                        <div class="flex items-start gap-2 text-[11px] text-textMuted">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Corporate Office Interiors</span>
+                        </div>
+                        <div class="flex items-start gap-2 text-[11px] text-textMuted">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Commercial Fit-Out Projects</span>
+                        </div>
+                        <div class="flex items-start gap-2 text-[11px] text-textMuted">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Space Planning, Design & Execution</span>
+                        </div>
+                        <div class="flex items-start gap-2 text-[11px] text-textMuted">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Project Management & Sourcing Control</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- CORE SERVICES SHOWCASE -->
+        <section class="px-5 py-3">
+            <div class="mb-3.5">
+                <span class="text-[9px] font-bold tracking-widest text-brandRed uppercase">Capabilities Portfolio</span>
+                <h3 class="text-sm font-extrabold text-textDark flex items-center gap-1.5 mt-0.5">
+                    <span class="w-1 h-4 bg-brandRed rounded-full inline-block"></span>
+                    Our Professional Services
+                </h3>
+            </div>
+
+            <!-- Structured Services Display Stack -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Service Card 1 -->
+                <div class="bg-white border border-gray-200/80 rounded-xl p-3.5 flex flex-col justify-between hover:border-brandRed/30 smooth-transition shadow-sm">
+                    <div class="text-brandRed mb-3">
+                        <i data-lucide="building" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-textDark">Corporate Interiors</h4>
+                        <p class="text-[10px] text-textMuted leading-normal mt-1">Innovative office environments for optimum commercial performance.</p>
+                    </div>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="bg-white border border-gray-200/80 rounded-xl p-3.5 flex flex-col justify-between hover:border-brandRed/30 smooth-transition shadow-sm">
+                    <div class="text-brandRed mb-3">
+                        <i data-lucide="layers" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-textDark">Office Fit-Outs</h4>
+                        <p class="text-[10px] text-textMuted leading-normal mt-1">High-precision installations and spatial configurations.</p>
+                    </div>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="bg-white border border-gray-200/80 rounded-xl p-3.5 flex flex-col justify-between hover:border-brandRed/30 smooth-transition shadow-sm">
+                    <div class="text-brandRed mb-3">
+                        <i data-lucide="check-square" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-textDark">Turnkey Projects</h4>
+                        <p class="text-[10px] text-textMuted leading-normal mt-1">Comprehensive design, construction, and handovers.</p>
+                    </div>
+                </div>
+
+                <!-- Service Card 4 -->
+                <div class="bg-white border border-gray-200/80 rounded-xl p-3.5 flex flex-col justify-between hover:border-brandRed/30 smooth-transition shadow-sm">
+                    <div class="text-brandRed mb-3">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-textDark">Retail Interiors</h4>
+                        <p class="text-[10px] text-textMuted leading-normal mt-1">Client-focused architectural layouts for physical stores.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- PROJECT GALLERY SHOWCASE -->
+        <section class="px-5 py-3">
+            <div class="mb-3.5">
+                <span class="text-[9px] font-bold tracking-widest text-brandRed uppercase">Visual Deliverables</span>
+                <h3 class="text-sm font-extrabold text-textDark flex items-center gap-1.5 mt-0.5">
+                    <span class="w-1 h-4 bg-brandRed rounded-full inline-block"></span>
+                    Project Gallery
+                </h3>
+            </div>
+
+            <!-- Dynamic visual showcase displaying 6 projects -->
+            <div class="grid grid-cols-2 gap-2.5">
+                <!-- Project 1 -->
+                <div onclick="openGalleryLightbox(0)" class="relative group aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=300" alt="Executive Workspace" class="w-full h-full object-cover group-hover:scale-105 smooth-transition">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5">
+                        <span class="text-[8px] text-brandYellow font-bold uppercase tracking-wider">Delhi NCR</span>
+                        <h4 class="text-white text-[10px] font-bold">Executive Boardroom</h4>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div onclick="openGalleryLightbox(1)" class="relative group aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=300" alt="Tech Hub" class="w-full h-full object-cover group-hover:scale-105 smooth-transition">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5">
+                        <span class="text-[8px] text-brandYellow font-bold uppercase tracking-wider">Gurgaon</span>
+                        <h4 class="text-white text-[10px] font-bold">Tech Corporate Plaza</h4>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div onclick="openGalleryLightbox(2)" class="relative group aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=300" alt="Lobby Atrium" class="w-full h-full object-cover group-hover:scale-105 smooth-transition">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5">
+                        <span class="text-[8px] text-brandYellow font-bold uppercase tracking-wider">Bangalore</span>
+                        <h4 class="text-white text-[10px] font-bold">Main Corporate Atrium</h4>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div onclick="openGalleryLightbox(3)" class="relative group aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&q=80&w=300" alt="Design Hub" class="w-full h-full object-cover group-hover:scale-105 smooth-transition">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5">
+                        <span class="text-[8px] text-brandYellow font-bold uppercase tracking-wider">Mumbai</span>
+                        <h4 class="text-white text-[10px] font-bold">Modern Creative Studio</h4>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div onclick="openGalleryLightbox(4)" class="relative group aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=300" alt="Executive Layout" class="w-full h-full object-cover group-hover:scale-105 smooth-transition">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5">
+                        <span class="text-[8px] text-brandYellow font-bold uppercase tracking-wider">Gurgaon</span>
+                        <h4 class="text-white text-[10px] font-bold">Premium CEO Wing</h4>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div onclick="openGalleryLightbox(5)" class="relative group aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&q=80&w=300" alt="Turnkey Office" class="w-full h-full object-cover group-hover:scale-105 smooth-transition">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5">
+                        <span class="text-[8px] text-brandYellow font-bold uppercase tracking-wider">Delhi NCR</span>
+                        <h4 class="text-white text-[10px] font-bold">Turnkey Corporate Hub</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- GEOGRAPHIC REGIONS & DETAILS -->
+        <section class="px-5 py-3">
+            <div class="bg-white border border-gray-200/80 rounded-2xl p-5 shadow-corporate">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="p-1.5 bg-brandLightGray rounded-lg text-brandRed">
+                        <i data-lucide="map-pin" class="w-4 h-4"></i>
+                    </div>
+                    <span class="text-[10px] font-bold text-textMuted uppercase tracking-wider">Regional Offices</span>
+                </div>
+
+                <!-- Location Selector Tabs -->
+                <div class="grid grid-cols-4 gap-1 p-1 bg-brandLightGray rounded-xl mb-3.5 border border-gray-100">
+                    <button onclick="changeActiveHub('delhi')" id="hub-delhi" class="hub-control py-2 text-[10px] font-bold rounded-lg smooth-transition bg-white text-brandRed shadow-sm">Delhi</button>
+                    <button onclick="changeActiveHub('gurgaon')" id="hub-gurgaon" class="hub-control py-2 text-[10px] font-bold rounded-lg smooth-transition text-textMuted hover:text-textDark">Gurgaon</button>
+                    <button onclick="changeActiveHub('bangalore')" id="hub-bangalore" class="hub-control py-2 text-[10px] font-bold rounded-lg smooth-transition text-textMuted hover:text-textDark">Bangalore</button>
+                    <button onclick="changeActiveHub('mumbai')" id="hub-mumbai" class="hub-control py-2 text-[10px] font-bold rounded-lg smooth-transition text-textMuted hover:text-textDark">Mumbai</button>
+                </div>
+
+                <!-- Interactive Location Detail Display -->
+                <div class="p-3.5 bg-brandLightGray rounded-xl border border-gray-200/50 min-h-[70px] flex items-center">
+                    <p id="hub-address-output" class="text-xs text-textMuted leading-relaxed font-medium">
+                        <strong class="text-textDark">Delhi Office Hub:</strong> Okhla Industrial Area Phase III, Business Central Complex, New Delhi - 110020, India.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- PROJECT INQUIRY PORTAL -->
+        <section class="px-5 py-3">
+            <div class="bg-[#FCFCFD] border border-gray-200/80 rounded-2xl p-5 shadow-sm">
+                <div class="mb-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-textDark">Consult Project Coordinator</h3>
+                    <p class="text-[11px] text-textMuted mt-0.5">Direct link to schedule modular layout and execution consultations.</p>
+                </div>
+
+                <form id="vcardInquiryForm" onsubmit="handleInquirySubmission(event)" class="space-y-2.5">
+                    <input type="text" id="inquirer-name" required placeholder="Full Name" class="w-full text-xs px-3.5 py-3 rounded-xl border border-gray-200 focus:border-brandRed focus:ring-1 focus:ring-brandRed outline-none bg-white text-textDark smooth-transition">
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="email" id="inquirer-email" required placeholder="Email Address" class="w-full text-xs px-3.5 py-3 rounded-xl border border-gray-200 focus:border-brandRed focus:ring-1 focus:ring-brandRed outline-none bg-white text-textDark smooth-transition">
+                        <input type="tel" id="inquirer-phone" required placeholder="Contact Number" class="w-full text-xs px-3.5 py-3 rounded-xl border border-gray-200 focus:border-brandRed focus:ring-1 focus:ring-brandRed outline-none bg-white text-textDark smooth-transition">
+                    </div>
+
+                    <select id="inquirer-service" required class="w-full text-xs px-3.5 py-3 rounded-xl border border-gray-200 focus:border-brandRed focus:ring-1 focus:ring-brandRed outline-none bg-white text-textDark smooth-transition">
+                        <option value="" disabled selected>Desired Interior Scope</option>
+                        <option value="Corporate Fit-Outs">Corporate Fit-Outs</option>
+                        <option value="Turnkey Interior Execution">Turnkey Execution</option>
+                        <option value="Retail Brand Spaces">Retail Brand Spaces</option>
+                        <option value="Commercial Space Design">Commercial Space Design</option>
+                    </select>
+
+                    <textarea id="inquirer-message" rows="3" required placeholder="A brief overview of your spatial requirement (size, location)..." class="w-full text-xs px-3.5 py-3 rounded-xl border border-gray-200 focus:border-brandRed focus:ring-1 focus:ring-brandRed outline-none bg-white text-textDark smooth-transition resize-none"></textarea>
+                    
+                    <button type="submit" class="w-full bg-brandRed hover:bg-brandRedDark active:scale-[0.98] text-white font-bold text-xs py-3.5 px-6 rounded-xl shadow-sm uppercase tracking-wider smooth-transition">
+                        Submit Consultation Request
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- PREMIUM CORPORATE FOOTER -->
+        <footer class="mt-auto px-5 py-8 border-t border-gray-100 text-center bg-white">
+            <div class="flex justify-center mb-4 select-none">
+                <svg class="h-6 w-auto" viewBox="0 0 240 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="16" cy="17" r="4" fill="#D62828" />
+                    <path d="M16 23C16 23 23 23 23 31C23 39 16 39 16 39V23Z" fill="#D62828" />
+                    <path d="M16 39C16 39 9 39 9 31C9 23 16 23 16 23V39Z" fill="#D62828" />
+                    <path d="M16 23V51" stroke="#D62828" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M26 23C29 23 33 26 33 30H20C20 26 23 23 26 23Z" fill="#D62828" />
+                    <path d="M16 31H28C28 35 25 38 21 38C17 38 16 35 16 31Z" fill="#D62828" />
+                    <text x="44" y="32" font-family="'Inter', sans-serif" font-weight="800" font-size="21" fill="#D62828" letter-spacing="-0.3">FocusOn</text>
+                    <text x="44" y="48" font-family="'Inter', sans-serif" font-weight="400" font-size="10.5" fill="#333333" letter-spacing="4">INTERIORS</text>
+                </svg>
+            </div>
+            
+            <p class="text-xs text-textMuted font-medium mb-1">Designing Spaces. Delivering Excellence.</p>
+            <p class="text-[10px] text-gray-400">FocusOn Interiors © 2026. All Rights Reserved.</p>
+            
+            <div class="mt-4 flex justify-center gap-4 text-[10px] text-brandRed font-bold uppercase tracking-wider">
+                <a href="http://www.focusoninteriors.com" target="_blank" class="hover:underline">Corporate Site</a>
+                <span class="text-gray-300">•</span>
+                <a href="mailto:decorators@focusoninterior.in" class="hover:underline">Contact Support</a>
+            </div>
+        </footer>
+
+        <!-- -->
+        <!-- STICKY ACTION NAV BAR FOR MOBILE SCREENSHOTS -->
+        <div class="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-gray-100 px-4 py-3 flex gap-3 justify-around items-center max-w-md mx-auto shadow-[0_-10px_25px_rgba(0,0,0,0.03)]">
+            <a href="tel:+919999999999" class="flex flex-col items-center gap-1 text-textDark hover:text-brandRed smooth-transition">
+                <div class="p-2 rounded-full bg-brandLightGray text-brandRed">
+                    <i data-lucide="phone" class="w-4 h-4"></i>
+                </div>
+                <span class="text-[9px] font-bold uppercase tracking-wider">Call</span>
+            </a>
+            
+            <a href="https://wa.me/919999999999" target="_blank" class="flex flex-col items-center gap-1 text-textDark hover:text-green-600 smooth-transition">
+                <div class="p-2 rounded-full bg-green-50 text-green-600">
+                    <i data-lucide="message-square" class="w-4 h-4"></i>
+                </div>
+                <span class="text-[9px] font-bold uppercase tracking-wider">WhatsApp</span>
+            </a>
+
+            <!-- Prominent action save contact -->
+            <button onclick="downloadVCard()" class="flex-1 bg-brandRed hover:bg-brandRedDark text-white py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md uppercase tracking-wider smooth-transition">
+                <i data-lucide="user-plus" class="w-4 h-4"></i>
+                Save vCard
+            </button>
+
+            <button onclick="openShareModal()" class="flex flex-col items-center gap-1 text-textDark hover:text-brandRed smooth-transition">
+                <div class="p-2 rounded-full bg-brandLightGray text-brandRed">
+                    <i data-lucide="share" class="w-4 h-4"></i>
+                </div>
+                <span class="text-[9px] font-bold uppercase tracking-wider">Share</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- -->
+    <!-- MODAL POPUP: QR CODE DISPLAY -->
+    <div id="qrModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 max-w-xs w-full shadow-2xl relative text-center border border-gray-100">
+            <button onclick="closeQrModal()" class="absolute top-4 right-4 text-textMuted hover:text-textDark p-1.5 rounded-full hover:bg-brandLightGray smooth-transition">
+                <i data-lucide="x" class="w-4.5 h-4.5"></i>
+            </button>
+            
+            <div class="flex justify-center mb-4">
+                <svg class="h-6 w-auto" viewBox="0 0 240 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="16" cy="17" r="4" fill="#D62828" />
+                    <path d="M16 23C16 23 23 23 23 31C23 39 16 39 16 39V23Z" fill="#D62828" />
+                    <path d="M16 39C16 39 9 39 9 31C9 23 16 23 16 23V39Z" fill="#D62828" />
+                    <path d="M16 23V51" stroke="#D62828" stroke-width="3" stroke-linecap="round"/>
+                    <text x="44" y="32" font-family="'Inter', sans-serif" font-weight="800" font-size="21" fill="#D62828" letter-spacing="-0.3">FocusOn</text>
+                    <text x="44" y="48" font-family="'Inter', sans-serif" font-weight="400" font-size="10.5" fill="#333333" letter-spacing="4">INTERIORS</text>
+                </svg>
+            </div>
+            
+            <h3 class="text-sm font-extrabold text-textDark mb-0.5">Roushan Kumar</h3>
+            <p class="text-[10px] text-brandRed font-bold uppercase tracking-widest mb-4">Project Coordinator</p>
+            
+            <div class="bg-brandLightGray p-3.5 rounded-2xl inline-block mb-3 border border-gray-200/60 shadow-inner">
+                <img id="modal-qr-img" src="" alt="Direct Scan Link" class="w-40 h-40 rounded-lg">
+            </div>
+
+            <p class="text-[10px] text-textMuted leading-relaxed px-4 mb-4">
+                Let your client scan this code using their phone camera to open your vCard immediately.
+            </p>
+
+            <button onclick="closeQrModal()" class="w-full bg-brandLightGray hover:bg-gray-200 text-textDark font-bold text-xs py-2.5 rounded-xl smooth-transition uppercase tracking-wider">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP: SHARE SHEET OPTIONS -->
+    <div id="shareModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 max-w-xs w-full shadow-2xl relative border border-gray-100">
+            <button onclick="closeShareModal()" class="absolute top-4 right-4 text-textMuted hover:text-textDark p-1.5 rounded-full hover:bg-brandLightGray smooth-transition">
+                <i data-lucide="x" class="w-4.5 h-4.5"></i>
+            </button>
+            <h3 class="text-sm font-extrabold text-textDark mb-4 uppercase tracking-wider">Share Profile</h3>
+            
+            <div class="space-y-2">
+                <!-- Copy link -->
+                <button onclick="copyProfileLink()" class="w-full flex items-center justify-between p-3 rounded-xl bg-brandLightGray hover:bg-brandRed/5 group smooth-transition text-left border border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-white rounded-lg text-brandRed border border-gray-200/50">
+                            <i data-lucide="link" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-textDark block">Copy Link URL</span>
+                            <span id="current-url-display" class="text-[9px] text-textMuted block max-w-[150px] truncate">https://www.focusoninteriors.com</span>
+                        </div>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-textMuted group-hover:translate-x-1 smooth-transition"></i>
+                </button>
+
+                <!-- WhatsApp share -->
+                <a id="share-whatsapp-link" href="" target="_blank" class="w-full flex items-center justify-between p-3 rounded-xl bg-brandLightGray hover:bg-green-50 group smooth-transition text-left border border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-white rounded-lg text-green-600 border border-gray-200/50">
+                            <i data-lucide="message-square" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-textDark block">Share to WhatsApp</span>
+                            <span class="text-[9px] text-textMuted block">Send details direct to chat</span>
+                        </div>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-textMuted group-hover:translate-x-1 smooth-transition"></i>
+                </a>
+
+                <!-- Email Send -->
+                <a id="share-email-link" href="" class="w-full flex items-center justify-between p-3 rounded-xl bg-brandLightGray hover:bg-brandRed/5 group smooth-transition text-left border border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-white rounded-lg text-brandRed border border-gray-200/50">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-textDark block">Send via Email</span>
+                            <span class="text-[9px] text-textMuted block">Forward profile URL direct</span>
+                        </div>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-textMuted group-hover:translate-x-1 smooth-transition"></i>
+                </a>
             </div>
         </div>
-    </footer>
+    </div>
 
-    <!-- JavaScript -->
+    <!-- MODAL POPUP: GALLERY LIGHTBOX -->
+    <div id="galleryLightbox" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-xs hidden flex flex-col justify-between p-4">
+        <!-- Lightbox Header -->
+        <div class="flex justify-between items-center py-2 px-4 text-white">
+            <span id="lightbox-index-display" class="text-[10px] tracking-widest font-bold uppercase">1 / 6</span>
+            <button onclick="closeGalleryLightbox()" class="p-2 bg-white/10 hover:bg-white/20 rounded-full smooth-transition text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Image viewport window -->
+        <div class="flex-1 flex items-center justify-center relative my-4">
+            <!-- Left Arrow -->
+            <button onclick="moveGalleryCursor(-1)" class="absolute left-2 p-3 bg-white/10 hover:bg-white/20 rounded-full smooth-transition text-white active:scale-95">
+                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Image Wrapper -->
+            <div class="max-w-xs max-h-[50vh] overflow-hidden rounded-2xl shadow-2xl mx-12 border border-white/10">
+                <img id="lightbox-main-img" src="" alt="Project Visualizer" class="object-contain max-h-[50vh] max-w-full">
+            </div>
+
+            <!-- Right Arrow -->
+            <button onclick="moveGalleryCursor(1)" class="absolute right-2 p-3 bg-white/10 hover:bg-white/20 rounded-full smooth-transition text-white active:scale-95">
+                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Lightbox Info Drawer -->
+        <div class="bg-white/10 p-4 rounded-2xl max-w-xs mx-auto w-full text-center text-white mb-6 backdrop-blur-md border border-white/10">
+            <span id="lightbox-tag-display" class="text-brandYellow text-[9px] font-bold tracking-widest uppercase mb-1 block">Delhi NCR</span>
+            <h4 id="lightbox-title-display" class="text-xs font-bold mb-1">Executive Workspace</h4>
+            <p id="lightbox-desc-display" class="text-[10px] text-gray-300 leading-normal">Premium acoustic conference room custom designed by FocusOn Interiors.</p>
+        </div>
+    </div>
+
+    <!-- CUSTOM NOTIFICATION SLIDE TOAST -->
+    <div id="slideToast" class="fixed bottom-24 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 transform translate-y-24 opacity-0 smooth-transition max-w-xs w-full bg-textDark text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 pointer-events-none">
+        <div class="p-1.5 bg-brandRed rounded-lg text-white">
+            <i id="toast-vector-icon" data-lucide="bell" class="w-4 h-4"></i>
+        </div>
+        <p id="toast-text-display" class="text-xs font-semibold">Information processed successfully.</p>
+    </div>
+
+    <!-- -->
     <script>
-    // ===== STATE =====
-    let currentVendors = [];
-    let lastSearchParams = null;
-    let isDarkMode = false;
-    let loadingInterval = null;
+        // Global system status and variables
+        let selectedGalleryIndex = 0;
 
-    // ===== INDIAN STATES =====
-    const indianStates = [
-        "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Delhi","Goa",
-        "Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala",
-        "Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland",
-        "Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura",
-        "Uttar Pradesh","Uttarakhand","West Bengal","Chandigarh","Puducherry",
-        "Jammu and Kashmir","Ladakh"
-    ];
-
-    // ===== INIT =====
-    document.addEventListener('DOMContentLoaded', () => {
-        populateStates();
-        loadHistory();
-        loadSavedVendors();
-    });
-
-    function populateStates() {
-        const sel = document.getElementById('stateSelect');
-        indianStates.forEach(s => {
-            const opt = document.createElement('option');
-            opt.value = s; opt.textContent = s;
-            sel.appendChild(opt);
-        });
-    }
-
-    // ===== LOADING MESSAGES =====
-    const loadingMessages = [
-        "Searching local vendors...",
-        "Scanning IndiaMART listings...",
-        "Checking TradeIndia suppliers...",
-        "Browsing Justdial business listings...",
-        "Analyzing Google Business results...",
-        "Matching specifications...",
-        "Verifying supplier details...",
-        "Analyzing supplier relevance...",
-        "Finding nearby suppliers...",
-        "Ranking by location proximity...",
-        "Checking brand availability...",
-        "Compiling vendor shortlist..."
-    ];
-
-    let msgIndex = 0;
-    function startLoadingAnimation() {
-        const section = document.getElementById('loadingSection');
-        const msgEl = document.getElementById('loadingMessage');
-        section.classList.remove('hidden');
-        msgIndex = 0;
-        msgEl.textContent = loadingMessages[0];
-        loadingInterval = setInterval(() => {
-            msgIndex = (msgIndex + 1) % loadingMessages.length;
-            msgEl.textContent = loadingMessages[msgIndex];
-        }, 2500);
-    }
-
-    function stopLoadingAnimation() {
-        document.getElementById('loadingSection').classList.add('hidden');
-        if (loadingInterval) clearInterval(loadingInterval);
-    }
-
-    function updateProgress(pct, step) {
-        document.getElementById('progressBar').style.width = pct + '%';
-        document.getElementById('progressText').textContent = pct + '%';
-        for (let i = 1; i <= 4; i++) {
-            const el = document.getElementById('step' + i);
-            if (i < step) {
-                el.querySelector('div').style.background = '#D32F2F';
-                el.querySelector('div').style.borderColor = '#D32F2F';
-                el.querySelector('div').innerHTML = '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>';
-                el.querySelector('span').style.color = '#D32F2F';
-            } else if (i === step) {
-                el.querySelector('div').style.borderColor = '#D32F2F';
-                el.querySelector('div').style.background = '#FFEBEE';
-                el.querySelector('span').style.color = '#D32F2F';
-                el.querySelector('span').style.fontWeight = '600';
-            }
-        }
-    }
-
-    // ===== SEARCH HANDLER =====
-    async function handleSearch(e) {
-        e.preventDefault();
-
-        const itemName = document.getElementById('itemName').value.trim();
-        const itemDesc = document.getElementById('itemDesc').value.trim();
-        const techSpecs = document.getElementById('techSpecs').value.trim();
-        const brandMake = document.getElementById('brandMake').value.trim();
-        const state = document.getElementById('stateSelect').value;
-        const district = document.getElementById('district').value.trim();
-
-        if (!itemName || !state || !district) {
-            showToast('Please fill in all required fields', 'error');
-            return;
-        }
-
-        lastSearchParams = { itemName, itemDesc, techSpecs, brandMake, state, district };
-
-        // Disable button
-        const btn = document.getElementById('searchBtn');
-        btn.disabled = true;
-        btn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full spinner"></div> Searching...';
-
-        document.getElementById('resultsSection').classList.add('hidden');
-        document.getElementById('errorSection').classList.add('hidden');
-
-        startLoadingAnimation();
-        updateProgress(5, 1);
-
-        try {
-            // STEP 1: Generate search queries
-            const queries = generateSearchQueries(itemName, itemDesc, techSpecs, brandMake, state, district);
-            updateProgress(15, 2);
-
-            // STEP 2: Execute Serper searches
-            const searchResults = await executeSerperSearches(queries);
-            updateProgress(45, 3);
-
-            // STEP 3: Execute Serper places search
-            const placesResults = await executeSerperPlaces(itemName, brandMake, district, state);
-            updateProgress(55, 3);
-
-            // Combine all results
-            const combinedData = combineSearchResults(searchResults, placesResults);
-            updateProgress(65, 4);
-
-            // STEP 4-6: AI Analysis
-            const vendors = await analyzeWithAI(combinedData, lastSearchParams);
-            updateProgress(95, 4);
-
-            currentVendors = vendors;
-            renderVendorTable(vendors);
-            saveToHistory(lastSearchParams, vendors.length);
-
-            document.getElementById('resultsSection').classList.remove('hidden');
-            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-            updateProgress(100, 5);
-            showToast(`Found ${vendors.length} vendors successfully!`, 'success');
-
-        } catch (err) {
-            console.error('Search error:', err);
-            document.getElementById('errorMessage').textContent = err.message || 'An unexpected error occurred. Please check your API keys and try again.';
-            document.getElementById('errorSection').classList.remove('hidden');
-            showToast('Search failed. Please try again.', 'error');
-        } finally {
-            stopLoadingAnimation();
-            btn.disabled = false;
-            btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg> Search Vendors';
-        }
-    }
-
-    // ===== STEP 1: Generate Search Queries =====
-    function generateSearchQueries(item, desc, specs, brand, state, district) {
-        const queries = [];
-        const itemLower = item.toLowerCase();
-
-        // Core product + location queries
-        queries.push(`"${item}" suppliers ${district} ${state}`);
-        queries.push(`${item} dealer distributor ${district} ${state}`);
-        queries.push(`buy ${item} ${district} ${state} price`);
-
-        // IndiaMART specific
-        queries.push(`site:indiamart.com ${item} ${district} ${state}`);
-        queries.push(`site:indiamart.com ${item} suppliers ${state}`);
-
-        // TradeIndia specific
-        queries.push(`site:tradeindia.com ${item} ${district} ${state}`);
-
-        // Justdial specific
-        queries.push(`site:justdial.com ${item} suppliers ${district}`);
-
-        // Brand-specific queries
-        if (brand) {
-            queries.push(`"${brand}" ${item} dealer ${district} ${state}`);
-            queries.push(`"${brand}" authorized distributor ${state}`);
-            queries.push(`site:indiamart.com "${brand}" ${item} ${state}`);
-        }
-
-        // Description/spec queries
-        if (desc) {
-            queries.push(`${item} ${desc} supplier ${district} ${state}`);
-        }
-        if (specs) {
-            queries.push(`${item} ${specs} ${district} ${state} supplier`);
-        }
-
-        // Broader state-level search
-        queries.push(`${item} wholesale supplier ${state}`);
-        queries.push(`${item} manufacturer dealer ${state} contact number`);
-
-        return queries.slice(0, 10); // Limit to 10 queries
-    }
-
-    // ===== STEP 2: Serper Search =====
-    async function executeSerperSearches(queries) {
-        const allResults = [];
-
-        // Process queries in batches of 3
-        for (let i = 0; i < queries.length; i += 3) {
-            const batch = queries.slice(i, i + 3);
-            const promises = batch.map(q => serperSearch(q));
-
-            try {
-                const results = await Promise.allSettled(promises);
-                results.forEach((r, idx) => {
-                    if (r.status === 'fulfilled' && r.value) {
-                        allResults.push({ query: batch[idx], ...r.value });
-                    }
-                });
-            } catch (err) {
-                console.warn('Batch search error:', err);
-            }
-
-            // Small delay between batches
-            if (i + 3 < queries.length) {
-                await new Promise(resolve => setTimeout(resolve, 300));
-            }
-        }
-
-        return allResults;
-    }
-
-    async function serperSearch(query) {
-        const response = await fetch('https://google.serper.dev/search', {
-            method: 'POST',
-            headers: {
-                'X-API-KEY': SERPER_API_KEY,
-                'Content-Type': 'application/json'
+        // Structured High-Resolution Unsplash Showcase Gallery Data
+        const executiveProjects = [
+            {
+                img: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800",
+                tag: "Delhi NCR",
+                title: "Executive Boardroom",
+                desc: "High-end soundproof executive meeting room optimized for virtual communications and collaboration."
             },
-            body: JSON.stringify({
-                q: query,
-                gl: 'in',
-                hl: 'en',
-                num: 10
-            })
-        });
-
-        if (!response.ok) {
-            const errText = await response.text();
-            throw new Error(`Serper API error (${response.status}): ${errText}`);
-        }
-
-        return await response.json();
-    }
-
-    // ===== STEP 2b: Serper Places =====
-    async function executeSerperPlaces(item, brand, district, state) {
-        const placeQueries = [
-            `${item} suppliers in ${district}`,
-            `${item} dealers ${district} ${state}`
-        ];
-        if (brand) placeQueries.push(`${brand} ${item} dealer ${district}`);
-
-        const allPlaces = [];
-        for (const q of placeQueries) {
-            try {
-                const resp = await fetch('https://google.serper.dev/places', {
-                    method: 'POST',
-                    headers: {
-                        'X-API-KEY': SERPER_API_KEY,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ q, gl: 'in', hl: 'en' })
-                });
-                if (resp.ok) {
-                    const data = await resp.json();
-                    if (data.places) allPlaces.push(...data.places);
-                }
-            } catch (err) {
-                console.warn('Places search error:', err);
+            {
+                img: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=800",
+                tag: "Gurgaon",
+                title: "Tech Corporate Plaza",
+                desc: "Ergonomic workspace accommodating over 200 developers with modular seating plans and energy efficiency."
+            },
+            {
+                img: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800",
+                tag: "Bangalore",
+                title: "Main Corporate Atrium",
+                desc: "Impressive entrance layout using green plant installations and minimalist modern reception desks."
+            },
+            {
+                img: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&q=80&w=800",
+                tag: "Mumbai",
+                title: "Modern Creative Studio",
+                desc: "Creative agency studio with open design layouts, exposed ceilings, and dynamic collaborative areas."
+            },
+            {
+                img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=800",
+                tag: "Gurgaon NCR",
+                title: "Premium CEO Wing",
+                desc: "Bespoke handcrafted custom mahogany furniture arrangement with localized atmospheric lighting controllers."
+            },
+            {
+                img: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&q=80&w=800",
+                tag: "Delhi NCR",
+                title: "Turnkey Corporate Hub",
+                desc: "Complete 3-story design, build, and installation project including custom electrical layouts and safety handovers."
             }
-        }
-        return allPlaces;
-    }
+        ];
 
-    // ===== STEP 3: Combine Results =====
-    function combineSearchResults(searchResults, placesResults) {
-        let combined = {
-            organicResults: [],
-            localResults: [],
-            knowledgeGraph: [],
-            relatedSearches: []
+        // Core Address Database configurations mapping
+        const physicalOfficeHubs = {
+            delhi: "Delhi Office Hub: Okhla Industrial Area Phase III, Business Central Complex, New Delhi - 110020, India.",
+            gurgaon: "Gurgaon Regional HQ: Sector 45, Near Cyber City Hub, Millennium Plaza, Gurgaon - 122003, India.",
+            bangalore: "Bangalore Hub: Indiranagar 100 Feet Rd, Innovative tech park, Block B, Bangalore - 560038, India.",
+            mumbai: "Mumbai Office Workspace: Bandra Kurla Complex (BKC), Signature Highrise Office Suite, Mumbai - 400051, India."
         };
 
-        searchResults.forEach(sr => {
-            if (sr.organic) {
-                sr.organic.forEach(o => {
-                    combined.organicResults.push({
-                        title: o.title || '',
-                        snippet: o.snippet || '',
-                        link: o.link || '',
-                        source: detectSource(o.link || '')
-                    });
-                });
-            }
-            if (sr.local) {
-                sr.local.forEach(l => {
-                    combined.localResults.push({
-                        title: l.title || '',
-                        address: l.address || '',
-                        phone: l.phone || l.phoneNumber || '',
-                        rating: l.rating || '',
-                        website: l.website || '',
-                        type: l.type || ''
-                    });
-                });
-            }
-            if (sr.knowledgeGraph) {
-                combined.knowledgeGraph.push(sr.knowledgeGraph);
-            }
+        // Window load initializer and Lucide setup
+        window.addEventListener('load', function() {
+            lucide.createIcons();
+            
+            // Dynamic sync of browser url into local sharing metadata elements
+            const activeProfileURL = window.location.href;
+            document.getElementById('current-url-display').innerText = activeProfileURL;
+            
+            // Generate customized scanner APIs targeting the live profile URL path
+            const brandQRColorCode = "d62828";
+            const processedQR = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(activeProfileURL)}&color=${brandQRColorCode}`;
+            
+            document.getElementById('dynamic-badge-qr').src = processedQR;
+            document.getElementById('modal-qr-img').src = processedQR;
+
+            // Initialize customized corporate prefilled links
+            document.getElementById('share-whatsapp-link').href = `https://api.whatsapp.com/send?text=View%20Roushan%20Kumar's%20Executive%20Business%20Card%20at%3A%20${encodeURIComponent(activeProfileURL)}`;
+            document.getElementById('share-email-link').href = `mailto:?subject=Executive%20Contact%20Profile%20-%20Roushan%20Kumar&body=Please%20find%20the%20digital%20business%20card%20of%20Roushan%20Kumar%20(Project%20Coordinator%20at%20FocusOn%20Interiors)%20at%20the%20following%20URL:%20${encodeURIComponent(activeProfileURL)}`;
         });
 
-        placesResults.forEach(p => {
-            combined.localResults.push({
-                title: p.title || '',
-                address: p.address || '',
-                phone: p.phoneNumber || p.phone || '',
-                rating: p.rating || '',
-                website: p.website || '',
-                type: p.type || '',
-                ratingCount: p.ratingCount || 0,
-                cid: p.cid || ''
+        // 3D perspective orientation toggle handler
+        function toggleCardOrientation() {
+            const cardElement = document.getElementById('badge-card');
+            cardElement.classList.toggle('flipped');
+        }
+
+        // Active geographic hub selection switcher
+        function changeActiveHub(hubSelectorKey) {
+            // Reset active styles on all location selectors
+            document.querySelectorAll('.hub-control').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-brandRed', 'shadow-sm');
+                btn.classList.add('text-textMuted', 'hover:text-textDark');
             });
-        });
 
-        // Deduplicate local results by title
-        const seenTitles = new Set();
-        combined.localResults = combined.localResults.filter(l => {
-            const key = l.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-            if (seenTitles.has(key)) return false;
-            seenTitles.add(key);
-            return true;
-        });
-
-        // Deduplicate organic results by link
-        const seenLinks = new Set();
-        combined.organicResults = combined.organicResults.filter(o => {
-            if (seenLinks.has(o.link)) return false;
-            seenLinks.add(o.link);
-            return true;
-        });
-
-        return combined;
-    }
-
-    function detectSource(url) {
-        if (!url) return 'Web';
-        const u = url.toLowerCase();
-        if (u.includes('indiamart.com')) return 'IndiaMART';
-        if (u.includes('tradeindia.com')) return 'TradeIndia';
-        if (u.includes('justdial.com')) return 'JustDial';
-        if (u.includes('google.com/maps') || u.includes('google.co.in/maps')) return 'Google Maps';
-        if (u.includes('alibaba.com')) return 'Alibaba';
-        if (u.includes('amazon.in') || u.includes('amazon.com')) return 'Amazon';
-        if (u.includes('flipkart.com')) return 'Flipkart';
-        return 'Company Website';
-    }
-
-    // ===== STEP 4-6: AI Analysis =====
-    async function analyzeWithAI(data, params) {
-        const systemPrompt = `You are a senior procurement research analyst for FocusOn Interiors, a Delhi-based Interior & Construction company. Your job is to analyze raw Google search results and extract real vendor information.
-
-CRITICAL RULES:
-- Extract ONLY real vendors/suppliers from the provided search data
-- DO NOT invent or fabricate any vendor names, phone numbers, emails, or details
-- If contact information is available in the search snippets/results, include it
-- If contact info is NOT in the data, leave those fields as "Available on website" or "Contact via listing"
-- Match vendors to the requested specifications
-- Prioritize vendors in the same district first, then nearby areas, then same state
-- Remove irrelevant results (news articles, blog posts, unrelated businesses)
-- Provide realistic confidence/match percentage scores based on relevance
-- For each vendor, note which source the data came from (IndiaMART, TradeIndia, JustDial, Google Business, Company Website)
-- Identify if the vendor appears to be a verified business based on available data signals (ratings, reviews, complete profiles)`;
-
-        const userPrompt = `Analyze the following search results and extract the TOP 10 most relevant vendors/suppliers.
-
-SEARCH CRITERIA:
-- Item: ${params.itemName}
-- Description: ${params.itemDesc || 'N/A'}
-- Technical Specifications: ${params.techSpecs || 'N/A'}
-- Brand/Make: ${params.brandMake || 'Any'}
-- Location Priority: ${params.district}, ${params.state}
-
-SEARCH RESULTS DATA:
-=== ORGANIC RESULTS (${data.organicResults.length} results) ===
-${data.organicResults.slice(0, 40).map((o, i) => `[${i+1}] Title: ${o.title}\nSnippet: ${o.snippet}\nURL: ${o.link}\nSource: ${o.source}`).join('\n\n')}
-
-=== LOCAL BUSINESS RESULTS (${data.localResults.length} results) ===
-${data.localResults.slice(0, 25).map((l, i) => `[${i+1}] Business: ${l.title}\nAddress: ${l.address}\nPhone: ${l.phone || 'N/A'}\nRating: ${l.rating || 'N/A'}${l.ratingCount ? ' (' + l.ratingCount + ' reviews)' : ''}\nWebsite: ${l.website || 'N/A'}\nType: ${l.type || 'N/A'}`).join('\n\n')}
-
-RESPOND WITH VALID JSON ONLY. No markdown, no explanation. Use this exact structure:
-{
-  "vendors": [
-    {
-      "sr": 1,
-      "matchPercent": 92,
-      "companyName": "Exact company name from search results",
-      "item": "Item they supply",
-      "matchingDescription": "How this vendor matches the requirements",
-      "brandMatch": "Yes/No/Partial - explain",
-      "contactPerson": "Name if available, else 'N/A'",
-      "mobile": "Phone from results if available, else 'Available on listing'",
-      "email": "Email if found, else 'Available on website'",
-      "website": "URL from results",
-      "state": "State",
-      "district": "District/City",
-      "vendorSource": "IndiaMART/TradeIndia/JustDial/Google Business/Company Website",
-      "verificationStatus": "Verified/Unverified",
-      "verificationReason": "Why verified or not"
-    }
-  ]
-}`;
-
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-                'Content-Type': 'application/json',
-                'HTTP-Referer': window.location.href,
-                'X-Title': 'FocusOn Interiors Procurement'
-            },
-            body: JSON.stringify({
-                model: 'deepseek/deepseek-v4-flash',
-                messages: [
-                    { role: 'system', content: systemPrompt },
-                    { role: 'user', content: userPrompt }
-                ],
-                temperature: 0.3,
-                max_tokens: 4000
-            })
-        });
-
-        if (!response.ok) {
-            const errBody = await response.text();
-            throw new Error(`AI Analysis failed (${response.status}): ${errBody}`);
-        }
-
-        const aiData = await response.json();
-        let content = aiData.choices?.[0]?.message?.content || '';
-
-        // Clean up response - remove markdown code blocks if present
-        content = content.replace(/```json\s*/gi, '').replace(/```\s*/gi, '').trim();
-
-        let parsed;
-        try {
-            parsed = JSON.parse(content);
-        } catch (e) {
-            // Try to extract JSON from the response
-            const jsonMatch = content.match(/\{[\s\S]*"vendors"[\s\S]*\}/);
-            if (jsonMatch) {
-                parsed = JSON.parse(jsonMatch[0]);
-            } else {
-                throw new Error('Failed to parse AI response. The AI did not return valid JSON.');
+            // Set state highlight on target selector
+            const targetBtn = document.getElementById(`hub-${hubSelectorKey}`);
+            if (targetBtn) {
+                targetBtn.classList.remove('text-textMuted', 'hover:text-textDark');
+                targetBtn.classList.add('bg-white', 'text-brandRed', 'shadow-sm');
             }
+
+            // Interpolate target address string with smooth opacity crossfade
+            const textPanel = document.getElementById('hub-address-output');
+            textPanel.style.opacity = '0';
+            
+            setTimeout(() => {
+                let boldLabelHeader = hubSelectorKey.charAt(0).toUpperCase() + hubSelectorKey.slice(1);
+                if (hubSelectorKey === "delhi") boldLabelHeader = "Delhi Office Hub";
+                if (hubSelectorKey === "gurgaon") boldLabelHeader = "Gurgaon HQ";
+                
+                textPanel.innerHTML = `<strong class="text-textDark">${boldLabelHeader}:</strong> ${physicalOfficeHubs[hubSelectorKey]}`;
+                textPanel.style.opacity = '1';
+            }, 150);
         }
 
-        return parsed.vendors || [];
-    }
+        // Generate and stream real system .VCF file dynamically
+        function downloadVCard() {
+            const compiledVCFString = `BEGIN:VCARD
+VERSION:3.0
+N:Kumar;Roushan;;;
+FN:Roushan Kumar
+ORG:FocusOn Interiors
+TITLE:Project Coordinator
+TEL;TYPE=CELL,VOICE,PREF:+919999999999
+EMAIL;TYPE=PREF,INTERNET:decorators@focusoninterior.in
+URL:https://www.focusoninteriors.com
+ADR;TYPE=WORK,POSTAL,PARCEL:;;Gurgaon, Delhi, Bangalore, Mumbai;Haryana;Delhi-NCR;;India
+NOTE:Delivering Interior Projects with Precision, Coordination & Excellence.
+REV:${new Date().toISOString()}
+END:VCARD`;
 
-    // ===== RENDER TABLE =====
-    function renderVendorTable(vendors) {
-        const tbody = document.getElementById('vendorTableBody');
-        tbody.innerHTML = '';
+            // Setup dynamic download pipeline using standard data blobs
+            const contactDataBlob = new Blob([compiledVCFString], { type: 'text/vcard;charset=utf-8;' });
+            const temporaryAnchorElement = document.createElement('a');
+            temporaryAnchorElement.href = URL.createObjectURL(contactDataBlob);
+            temporaryAnchorElement.download = 'Roushan_Kumar_FocusOn.vcf';
+            
+            document.body.appendChild(temporaryAnchorElement);
+            temporaryAnchorElement.click();
+            document.body.removeChild(temporaryAnchorElement);
 
-        if (!vendors || vendors.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="15" class="text-center py-12 text-gray-400">
-                <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                No vendors found. Try adjusting your search criteria.
-            </td></tr>`;
-            document.getElementById('resultCount').textContent = '(0 vendors)';
-            return;
+            showDynamicSlideToast("Corporate VCard ready. Saving contact...", "user-plus");
         }
 
-        document.getElementById('resultCount').textContent = `(${vendors.length} vendors found)`;
-        document.getElementById('resultSummary').textContent = `For "${lastSearchParams.itemName}" in ${lastSearchParams.district}, ${lastSearchParams.state}`;
-
-        vendors.forEach((v, idx) => {
-            const row = document.createElement('tr');
-            row.className = 'animate-fade-in';
-            row.style.animationDelay = (idx * 0.05) + 's';
-
-            const matchPct = parseInt(v.matchPercent) || 0;
-            let matchClass = 'match-low';
-            let matchBg = '#FFEBEE';
-            if (matchPct >= 80) { matchClass = 'match-high'; matchBg = '#E8F5E9'; }
-            else if (matchPct >= 50) { matchClass = 'match-medium'; matchBg = '#FFF8E1'; }
-
-            const isVerified = v.verificationStatus?.toLowerCase() === 'verified';
-
-            const websiteDisplay = v.website && v.website !== 'N/A' && v.website !== 'Available on listing'
-                ? `<a href="${escapeHtml(v.website)}" target="_blank" rel="noopener" class="text-blue-600 hover:text-blue-800 underline text-xs break-all">${truncateUrl(v.website)}</a>`
-                : `<span class="text-gray-400 text-xs">${escapeHtml(v.website || 'N/A')}</span>`;
-
-            const brandText = v.brandMatch || 'N/A';
-            const brandClass = brandText.toLowerCase().startsWith('yes') ? 'spec-highlight' : '';
-
-            row.innerHTML = `
-                <td class="font-semibold text-center">${v.sr || idx + 1}</td>
-                <td class="text-center">
-                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl text-sm font-bold ${matchClass}" style="background: ${matchBg};">
-                        ${matchPct}%
-                    </div>
-                </td>
-                <td class="font-semibold" style="color: #333; min-width: 160px;">${escapeHtml(v.companyName || 'N/A')}</td>
-                <td class="text-sm">${escapeHtml(v.item || 'N/A')}</td>
-                <td class="text-sm" style="min-width: 200px; max-width: 280px;">${highlightSpecs(v.matchingDescription || 'N/A')}</td>
-                <td class="text-sm ${brandClass}">${escapeHtml(brandText)}</td>
-                <td class="text-sm">${escapeHtml(v.contactPerson || 'N/A')}</td>
-                <td class="text-sm" style="white-space: nowrap;">${escapeHtml(v.mobile || 'N/A')}</td>
-                <td class="text-sm break-all" style="max-width: 180px;">${escapeHtml(v.email || 'N/A')}</td>
-                <td class="text-sm" style="max-width: 180px;">${websiteDisplay}</td>
-                <td class="text-sm">${escapeHtml(v.state || 'N/A')}</td>
-                <td class="text-sm">${escapeHtml(v.district || 'N/A')}</td>
-                <td><span class="badge-source">${escapeHtml(v.vendorSource || 'Web')}</span></td>
-                <td>
-                    ${isVerified
-                        ? '<span class="badge-verified"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Verified</span>'
-                        : '<span class="badge-unverified">Unverified</span>'
-                    }
-                </td>
-                <td class="no-print">
-                    <button onclick="saveVendor(${idx})" class="p-1.5 rounded-lg hover:bg-red-50 transition-colors" title="Save Vendor">
-                        <svg class="w-4 h-4 text-gray-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-                        </svg>
-                    </button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-
-    function highlightSpecs(text) {
-        if (!lastSearchParams) return escapeHtml(text);
-        let result = escapeHtml(text);
-        // Highlight matching keywords
-        const keywords = [];
-        if (lastSearchParams.itemName) keywords.push(...lastSearchParams.itemName.split(/\s+/));
-        if (lastSearchParams.brandMake) keywords.push(...lastSearchParams.brandMake.split(/\s+/));
-        if (lastSearchParams.techSpecs) keywords.push(...lastSearchParams.techSpecs.split(/[\s,]+/));
-
-        keywords.filter(k => k.length > 2).forEach(kw => {
-            const regex = new RegExp(`(${kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-            result = result.replace(regex, '<span class="spec-highlight">$1</span>');
-        });
-        return result;
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
-
-    function truncateUrl(url) {
-        try {
-            const u = new URL(url);
-            let display = u.hostname.replace('www.', '');
-            if (display.length > 25) display = display.substring(0, 25) + '...';
-            return display;
-        } catch {
-            return url.length > 30 ? url.substring(0, 30) + '...' : url;
-        }
-    }
-
-    // ===== EXPORT TO CSV =====
-    function exportToCSV() {
-        if (!currentVendors || currentVendors.length === 0) {
-            showToast('No vendors to export', 'error');
-            return;
+        // Gallery visual lightbox controls
+        function openGalleryLightbox(targetItemIndex) {
+            selectedGalleryIndex = targetItemIndex;
+            updateLightboxContentState();
+            
+            const lightbox = document.getElementById('galleryLightbox');
+            lightbox.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Halt main content scroll during viewing
         }
 
-        const headers = ['Sr No', 'Match %', 'Company Name', 'Item', 'Matching Description', 'Brand Match', 'Contact Person', 'Mobile', 'Email', 'Website', 'State', 'District', 'Vendor Source', 'Verification Status'];
-
-        const rows = currentVendors.map((v, i) => [
-            v.sr || i + 1,
-            v.matchPercent || '',
-            `"${(v.companyName || '').replace(/"/g, '""')}"`,
-            `"${(v.item || '').replace(/"/g, '""')}"`,
-            `"${(v.matchingDescription || '').replace(/"/g, '""')}"`,
-            `"${(v.brandMatch || '').replace(/"/g, '""')}"`,
-            `"${(v.contactPerson || '').replace(/"/g, '""')}"`,
-            `"${(v.mobile || '').replace(/"/g, '""')}"`,
-            `"${(v.email || '').replace(/"/g, '""')}"`,
-            `"${(v.website || '').replace(/"/g, '""')}"`,
-            `"${(v.state || '').replace(/"/g, '""')}"`,
-            `"${(v.district || '').replace(/"/g, '""')}"`,
-            `"${(v.vendorSource || '').replace(/"/g, '""')}"`,
-            `"${(v.verificationStatus || '').replace(/"/g, '""')}"`
-        ]);
-
-        let csv = '\uFEFF'; // BOM for Excel
-        csv += headers.join(',') + '\n';
-        rows.forEach(r => csv += r.join(',') + '\n');
-
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        const dateStr = new Date().toISOString().slice(0, 10);
-        a.download = `FocusOn_Vendors_${lastSearchParams?.itemName || 'export'}_${dateStr}.csv`;
-        a.click();
-        URL.revokeObjectURL(url);
-        showToast('Excel file exported successfully!', 'success');
-    }
-
-    // ===== COPY TABLE =====
-    function copyTable() {
-        if (!currentVendors || currentVendors.length === 0) {
-            showToast('No vendors to copy', 'error');
-            return;
+        function closeGalleryLightbox() {
+            const lightbox = document.getElementById('galleryLightbox');
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = ''; // Resume normal scrolling layout
         }
 
-        const headers = ['Sr', 'Match%', 'Company', 'Item', 'Description', 'Brand', 'Contact', 'Mobile', 'Email', 'Website', 'State', 'District', 'Source', 'Status'];
-        let text = headers.join('\t') + '\n';
+        function moveGalleryCursor(offsetDirection) {
+            selectedGalleryIndex += offsetDirection;
+            
+            if (selectedGalleryIndex >= executiveProjects.length) {
+                selectedGalleryIndex = 0;
+            } else if (selectedGalleryIndex < 0) {
+                selectedGalleryIndex = executiveProjects.length - 1;
+            }
+            updateLightboxContentState();
+        }
 
-        currentVendors.forEach((v, i) => {
-            text += [
-                v.sr || i + 1, v.matchPercent || '', v.companyName || '', v.item || '',
-                v.matchingDescription || '', v.brandMatch || '', v.contactPerson || '',
-                v.mobile || '', v.email || '', v.website || '', v.state || '',
-                v.district || '', v.vendorSource || '', v.verificationStatus || ''
-            ].join('\t') + '\n';
-        });
+        function updateLightboxContentState() {
+            const activeProjectObj = executiveProjects[selectedGalleryIndex];
+            
+            document.getElementById('lightbox-main-img').src = activeProjectObj.img;
+            document.getElementById('lightbox-title-display').innerText = activeProjectObj.title;
+            document.getElementById('lightbox-tag-display').innerText = activeProjectObj.tag;
+            document.getElementById('lightbox-desc-display').innerText = activeProjectObj.desc;
+            document.getElementById('lightbox-index-display').innerText = `${selectedGalleryIndex + 1} / ${executiveProjects.length}`;
+        }
 
-        navigator.clipboard.writeText(text).then(() => {
-            showToast('Table copied to clipboard!', 'success');
-        }).catch(() => {
-            // Fallback
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            document.body.appendChild(ta);
-            ta.select();
+        // Modal displays triggers
+        function openQrModal() {
+            document.getElementById('qrModal').classList.remove('hidden');
+        }
+        function closeQrModal() {
+            document.getElementById('qrModal').classList.add('hidden');
+        }
+        function openShareModal() {
+            document.getElementById('shareModal').classList.remove('hidden');
+        }
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.add('hidden');
+        }
+
+        // Safe profile address copy tool
+        function copyProfileLink() {
+            const pathLink = window.location.href;
+            
+            // Build sandbox fallback layout to secure cross-browser operations
+            const sandboxClipboardInput = document.createElement('input');
+            sandboxClipboardInput.value = pathLink;
+            document.body.appendChild(sandboxClipboardInput);
+            sandboxClipboardInput.select();
             document.execCommand('copy');
-            document.body.removeChild(ta);
-            showToast('Table copied to clipboard!', 'success');
-        });
-    }
+            document.body.removeChild(sandboxClipboardInput);
 
-    // ===== PRINT TABLE =====
-    function printTable() {
-        if (!currentVendors || currentVendors.length === 0) {
-            showToast('No vendors to print', 'error');
-            return;
-        }
-        window.print();
-    }
-
-    // ===== SEARCH HISTORY =====
-    function saveToHistory(params, count) {
-        let history = JSON.parse(localStorage.getItem('focusOnSearchHistory') || '[]');
-        history.unshift({
-            ...params,
-            count,
-            timestamp: new Date().toISOString()
-        });
-        history = history.slice(0, 20); // Keep last 20
-        localStorage.setItem('focusOnSearchHistory', JSON.stringify(history));
-        loadHistory();
-    }
-
-    function loadHistory() {
-        const history = JSON.parse(localStorage.getItem('focusOnSearchHistory') || '[]');
-        const list = document.getElementById('historyList');
-        const noHistory = document.getElementById('noHistory');
-        const badge = document.getElementById('historyBadge');
-
-        if (history.length === 0) {
-            list.innerHTML = '';
-            noHistory.classList.remove('hidden');
-            badge.classList.add('hidden');
-            return;
+            showDynamicSlideToast("Profile URL copied to clipboard!", "copy");
+            closeShareModal();
         }
 
-        noHistory.classList.add('hidden');
-        badge.classList.remove('hidden');
-        badge.textContent = history.length;
+        // Validate and execute client consultation requests
+        function handleInquirySubmission(submissionEvent) {
+            submissionEvent.preventDefault();
 
-        list.innerHTML = history.map((h, i) => `
-            <div class="history-item p-3 rounded-xl border cursor-pointer" style="border-color: #E0E0E0;" onclick="loadFromHistory(${i})">
-                <div class="flex items-center justify-between">
-                    <span class="font-semibold text-sm" style="color: #D32F2F;">${escapeHtml(h.itemName)}</span>
-                    <span class="text-xs text-gray-400">${h.count} vendors</span>
-                </div>
-                <div class="text-xs text-gray-500 mt-1">${escapeHtml(h.district)}, ${escapeHtml(h.state)}</div>
-                <div class="text-xs text-gray-400 mt-0.5">${new Date(h.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
-            </div>
-        `).join('');
-    }
+            const name = document.getElementById('inquirer-name').value;
+            const email = document.getElementById('inquirer-email').value;
+            const phone = document.getElementById('inquirer-phone').value;
+            const service = document.getElementById('inquirer-service').value;
+            const message = document.getElementById('inquirer-message').value;
 
-    function loadFromHistory(idx) {
-        const history = JSON.parse(localStorage.getItem('focusOnSearchHistory') || '[]');
-        const h = history[idx];
-        if (!h) return;
-
-        document.getElementById('itemName').value = h.itemName || '';
-        document.getElementById('itemDesc').value = h.itemDesc || '';
-        document.getElementById('techSpecs').value = h.techSpecs || '';
-        document.getElementById('brandMake').value = h.brandMake || '';
-        document.getElementById('stateSelect').value = h.state || '';
-        document.getElementById('district').value = h.district || '';
-
-        toggleHistory();
-        showToast('Search loaded from history', 'info');
-    }
-
-    function clearHistory() {
-        localStorage.removeItem('focusOnSearchHistory');
-        loadHistory();
-        showToast('Search history cleared', 'info');
-    }
-
-    // ===== SAVED VENDORS =====
-    function saveVendor(idx) {
-        if (!currentVendors[idx]) return;
-
-        let saved = JSON.parse(localStorage.getItem('focusOnSavedVendors') || '[]');
-        const vendor = { ...currentVendors[idx], savedAt: new Date().toISOString() };
-
-        // Check duplicate
-        const exists = saved.some(s => s.companyName === vendor.companyName && s.item === vendor.item);
-        if (exists) {
-            showToast('Vendor already saved', 'info');
-            return;
+            // Feedback showing complete state processing
+            showDynamicSlideToast(`Inquiry sent! Thank you, ${name}.`, "check-circle");
+            
+            // Reset input controllers
+            document.getElementById('vcardInquiryForm').reset();
         }
 
-        saved.unshift(vendor);
-        saved = saved.slice(0, 50);
-        localStorage.setItem('focusOnSavedVendors', JSON.stringify(saved));
-        loadSavedVendors();
-        showToast(`${vendor.companyName} saved!`, 'success');
-    }
+        // Reusable slide-in notification engine
+        function showDynamicSlideToast(textMessage, lucideVectorIconKey = 'bell') {
+            const toastFrame = document.getElementById('slideToast');
+            const toastTextElement = document.getElementById('toast-text-display');
+            const toastIconElement = document.getElementById('toast-vector-icon');
+            
+            toastTextElement.innerText = textMessage;
+            toastIconElement.setAttribute('data-lucide', lucideVectorIconKey);
+            lucide.createIcons(); // Trigger rendering refresh inside Lucide
 
-    function loadSavedVendors() {
-        const saved = JSON.parse(localStorage.getItem('focusOnSavedVendors') || '[]');
-        const list = document.getElementById('savedList');
-        const noSaved = document.getElementById('noSaved');
+            // Initiate CSS sliding animations
+            toastFrame.classList.remove('translate-y-24', 'opacity-0');
+            toastFrame.classList.add('translate-y-0', 'opacity-100');
 
-        if (saved.length === 0) {
-            list.innerHTML = '';
-            noSaved.classList.remove('hidden');
-            return;
+            // Hide after threshold duration
+            setTimeout(() => {
+                toastFrame.classList.remove('translate-y-0', 'opacity-100');
+                toastFrame.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
         }
-
-        noSaved.classList.add('hidden');
-        list.innerHTML = saved.map((v, i) => `
-            <div class="p-3 rounded-xl border" style="border-color: #E0E0E0;">
-                <div class="flex items-center justify-between">
-                    <span class="font-semibold text-sm" style="color: #333;">${escapeHtml(v.companyName)}</span>
-                    <button onclick="removeSavedVendor(${i})" class="text-red-400 hover:text-red-600">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                </div>
-                <div class="text-xs text-gray-500 mt-1">${escapeHtml(v.item || '')} &bull; ${escapeHtml(v.district || '')}, ${escapeHtml(v.state || '')}</div>
-                <div class="flex items-center gap-2 mt-1.5">
-                    <span class="badge-source text-xs">${escapeHtml(v.vendorSource || 'Web')}</span>
-                    <span class="text-xs font-semibold ${(parseInt(v.matchPercent) >= 80) ? 'match-high' : 'match-medium'}">${v.matchPercent || 0}% match</span>
-                </div>
-                ${v.mobile && v.mobile !== 'N/A' && v.mobile !== 'Available on listing'
-                    ? `<div class="text-xs text-gray-500 mt-1">📞 ${escapeHtml(v.mobile)}</div>` : ''}
-                ${v.website && v.website !== 'N/A' && v.website !== 'Available on listing'
-                    ? `<a href="${escapeHtml(v.website)}" target="_blank" class="text-xs text-blue-600 hover:underline mt-0.5 block">🌐 Visit website</a>` : ''}
-            </div>
-        `).join('');
-    }
-
-    function removeSavedVendor(idx) {
-        let saved = JSON.parse(localStorage.getItem('focusOnSavedVendors') || '[]');
-        saved.splice(idx, 1);
-        localStorage.setItem('focusOnSavedVendors', JSON.stringify(saved));
-        loadSavedVendors();
-        showToast('Vendor removed', 'info');
-    }
-
-    function clearSavedVendors() {
-        localStorage.removeItem('focusOnSavedVendors');
-        loadSavedVendors();
-        showToast('Saved vendors cleared', 'info');
-    }
-
-    // ===== PANELS =====
-    function toggleHistory() {
-        const panel = document.getElementById('historyPanel');
-        const savedPanel = document.getElementById('savedPanel');
-        savedPanel.classList.add('translate-x-full');
-        panel.classList.toggle('translate-x-full');
-    }
-
-    function toggleSavedVendors() {
-        const panel = document.getElementById('savedPanel');
-        const historyPanel = document.getElementById('historyPanel');
-        historyPanel.classList.add('translate-x-full');
-        panel.classList.toggle('translate-x-full');
-    }
-
-    // ===== DARK MODE =====
-    function toggleDarkMode() {
-        isDarkMode = !isDarkMode;
-        if (isDarkMode) {
-            document.body.style.background = '#1a1a2e';
-            document.body.style.color = '#e0e0e0';
-            document.querySelectorAll('.bg-white').forEach(el => {
-                el.style.background = '#16213e';
-                el.style.borderColor = '#2a2a4a';
-            });
-            document.querySelectorAll('input, select, textarea').forEach(el => {
-                el.style.background = '#1a1a2e';
-                el.style.color = '#e0e0e0';
-                el.style.borderColor = '#2a2a4a';
-            });
-            document.getElementById('darkModeIcon').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
-        } else {
-            document.body.style.background = '#F5F5F5';
-            document.body.style.color = '#333333';
-            document.querySelectorAll('.bg-white').forEach(el => {
-                el.style.background = '#FFFFFF';
-                el.style.borderColor = '#E0E0E0';
-            });
-            document.querySelectorAll('input, select, textarea').forEach(el => {
-                el.style.background = '#F9FAFB';
-                el.style.color = '#333333';
-                el.style.borderColor = '#E0E0E0';
-            });
-            document.getElementById('darkModeIcon').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>';
-        }
-    }
-
-    // ===== UTILITIES =====
-    function resetForm() {
-        document.getElementById('searchForm').reset();
-        document.getElementById('resultsSection').classList.add('hidden');
-        document.getElementById('errorSection').classList.add('hidden');
-        currentVendors = [];
-    }
-
-    function retrySearch() {
-        document.getElementById('errorSection').classList.add('hidden');
-        if (lastSearchParams) {
-            document.getElementById('searchForm').dispatchEvent(new Event('submit'));
-        }
-    }
-
-    function showToast(msg, type) {
-        const existing = document.querySelectorAll('.toast');
-        existing.forEach(e => e.remove());
-
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.textContent = msg;
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transition = 'opacity 0.3s';
-            setTimeout(() => toast.remove(), 300);
-        }, 3500);
-    }
-
-    // Close panels on outside click
-    document.addEventListener('click', (e) => {
-        const historyPanel = document.getElementById('historyPanel');
-        const savedPanel = document.getElementById('savedPanel');
-
-        if (!historyPanel.contains(e.target) && !e.target.closest('[onclick="toggleHistory()"]')) {
-            historyPanel.classList.add('translate-x-full');
-        }
-        if (!savedPanel.contains(e.target) && !e.target.closest('[onclick="toggleSavedVendors()"]')) {
-            savedPanel.classList.add('translate-x-full');
-        }
-    });
     </script>
-
 </body>
 </html>
