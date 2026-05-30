@@ -281,8 +281,8 @@
 
         <!-- STICKY MOBILE ACTION BAR (Improved) -->
         <div class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-gray-200 px-4 py-2 flex gap-2 justify-around items-center max-w-md mx-auto shadow-[0_-8px_25px_-5px_rgba(0,0,0,0.05)]">
-            <a href="tel:+919876543210" class="flex flex-col items-center gap-0.5 text-textMuted"><div class="p-1.5 rounded-full bg-red-50 text-brandRed"><i data-lucide="phone" class="w-4 h-4"></i></div><span class="text-[9px] font-bold">Call</span></a>
-            <a href="https://wa.me/919876543210" target="_blank" class="flex flex-col items-center gap-0.5 text-textMuted"><div class="p-1.5 rounded-full bg-green-50 text-green-600"><i data-lucide="message-square" class="w-4 h-4"></i></div><span class="text-[9px] font-bold">WhatsApp</span></a>
+            <a href="tel:+918448345714" class="flex flex-col items-center gap-0.5 text-textMuted"><div class="p-1.5 rounded-full bg-red-50 text-brandRed"><i data-lucide="phone" class="w-4 h-4"></i></div><span class="text-[9px] font-bold">Call</span></a>
+            <a href="https://wa.me/918448345714" target="_blank" class="flex flex-col items-center gap-0.5 text-textMuted"><div class="p-1.5 rounded-full bg-green-50 text-green-600"><i data-lucide="message-square" class="w-4 h-4"></i></div><span class="text-[9px] font-bold">WhatsApp</span></a>
             <button onclick="downloadVCard()" class="flex-1 bg-brandRed text-white py-2 rounded-xl font-bold text-[11px] flex items-center justify-center gap-1 shadow-md"><i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Save Contact</button>
             <button onclick="openShareModal()" class="flex flex-col items-center gap-0.5 text-textMuted"><div class="p-1.5 rounded-full bg-gray-100 text-brandRed"><i data-lucide="share" class="w-4 h-4"></i></div><span class="text-[9px] font-bold">Share</span></button>
         </div>
@@ -299,10 +299,9 @@
         // Initialize Lucide, set global vars, gallery, vCard, hub switcher
         let galleryIndex = 0;
         const projects = [
-            {img:"https://images.unsplash.com/photo-1497366216548-37526070297c?w=800", tag:"Delhi NCR", title:"Executive Boardroom", desc:"High-end acoustic boardroom"},
-            {img:"https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=800", tag:"Gurgaon", title:"Tech Corporate Plaza", desc:"Modern agile workspace"},
-            {img:"https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800", tag:"Bangalore", title:"Corporate Atrium", desc:"Sculptural entrance design"},
-            {img:"https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800", tag:"Mumbai", title:"Creative Studio", desc:"Open plan creative hub"}
+            {img:"https://focusoninteriors.com/wp-content/uploads/2025/12/11.png.webp", tag:"L&T Mahape Mumbai", title:"Dynamic Collaborative Workspace & Lounge", desc:"A vibrant, open-plan office featuring flexible breakout seating, industrial-chic blue exposed ductwork, and biophilic green accents designed to foster creativity and team collaboration."},
+            {img:"https://focusoninteriors.com/wp-content/uploads/2026/05/Luminous25-scaled.jpg.webp", tag:"Luminous-Haridwar", title:"Branded Experience Center Entrance", desc:"A modern reception zone utilizing bold corporate colors, a circular backlit logo wall, and a striking traditional-meets-modern geometric wall art piece to create a memorable first impression for visitors."},
+            {img:"https://focusoninteriors.com/wp-content/uploads/2026/05/DSC_9098-HDR-scaled.webp", tag:"CentrCity - Gurgaon", title:"Premium Corporate Reception & Executive Lounge", desc:"An upscale corporate entrance featuring a curved minimalist reception desk, warm backlit frosted glass branding, and a cozy waiting lounge anchored by a custom wooden backlit map installation that exudes exclusivity."},
         ];
         window.addEventListener('load',()=>{lucide.createIcons(); let url=window.location.href; document.getElementById('dynamic-badge-qr').src=`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}&color=d62828`; document.getElementById('modal-qr-img').src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&color=d62828`; document.getElementById('share-whatsapp-link').href=`https://api.whatsapp.com/send?text=View%20Roushan%20Kumar's%20Profile%20${encodeURIComponent(url)}`; document.getElementById('share-email-link').href=`mailto:?subject=Roushan%20Kumar%20Business%20Card&body=${encodeURIComponent(url)}`;});
         function toggleCardOrientation(){ document.getElementById('badgeCard').classList.toggle('flipped'); }
